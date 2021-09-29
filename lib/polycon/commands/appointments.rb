@@ -16,7 +16,24 @@ module Polycon
         ]
 
         def call(date:, professional:, name:, surname:, phone:, notes: nil)
-          warn "TODO: Implementar creación de un turno con fecha '#{date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          fecha_hora = date.scan(/\w+/)
+          directorio = Dir.pwd 
+          array_aux = directorio.scan(/\w+/)
+          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
+          directorio = str_aux + "/.polycon"
+          directorio_profesional = directorio + "/" + professional
+          archivo = directorio_profesional + "/" + fecha_hora[0] + "-" + fecha_hora[1] + "-" + fecha_hora[2] + "_" + fecha_hora[3] + "-" + fecha_hora[4] + ".paf"
+          if(Dir.exists?(directorio))
+            if(Dir.exists?(directorio_profesional))
+              if(!File.exists?(archivo))
+                File.open(archivo, "w+") {|f| f.write "#{surname}\n#{name}\n#{phone}\n#{notes}"}
+              else puts "No se pudo agendar el turno, debido a que ya existe un turno para esa fecha con ese profesional"
+              end
+            else puts "No se pudo agendar el turno, debido a que el profesional no existe en el sistema"
+            end
+          else puts "No existen datos"
+          end  
+          #warn "TODO: Implementar creación de un turno con fecha '#{date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
