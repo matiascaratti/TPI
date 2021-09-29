@@ -64,7 +64,23 @@ module Polycon
         ]
 
         def call(*)
-          warn "TODO: Implementar listado de profesionales.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          directorio = Dir.pwd 
+          array_aux = directorio.scan(/\w+/)
+          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
+          directorio = str_aux + "/.polycon"
+          archivo = directorio + "/professionals.txt"
+          if(Dir.exists?(directorio))
+            if(File.exists?(archivo))
+              File.open(archivo) do |f| 
+                f.each_line do |line|
+                  puts line
+                end
+              end
+            else puts "No hay profesionales para mostrar"
+            end
+          else puts "No hay profesionales para mostrar"
+          end
+          #warn "TODO: Implementar listado de profesionales.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
