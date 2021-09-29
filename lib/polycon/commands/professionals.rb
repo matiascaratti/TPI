@@ -16,27 +16,30 @@ module Polycon
           array_aux = directorio.scan(/\w+/)
           str_aux = "/" + array_aux[0] + "/" + array_aux[1]
           directorio = str_aux + "/.polycon"
-          archivo = directorio + "/professionals.txt"
+          directorio_profesional = directorio + "/" + name
           if(!Dir.exists?(directorio))
             Dir.mkdir(directorio)
           end
-          if(!File.exists?(archivo))
-            File.open(archivo, "w+") {|f| f.write "#{name}\n"}
+          if(!Dir.exists?(directorio_profesional))
+            Dir.mkdir(directorio_profesional)
             puts "Creación exitosa"
           else
-            existe_profesional = false
-            File.open(archivo) do |f| 
-              f.each_line do |line|
-                existe_profesional = true if line.include? name
-              end
-            end
-            if(!existe_profesional)    
-              File.open(archivo, "a") {|f| f.write "#{name}\n"}
-              puts "Creación exitosa"
-            else
-              puts "Ya existe el profesional"
-            end
+            puts "Ya existe el profesional"
           end
+          #else
+          #  existe_profesional = false
+          #  File.open(archivo) do |f| 
+          #    f.each_line do |line|
+          #      existe_profesional = true if line.include? name
+          #    end
+          #  end
+          #  if(!existe_profesional)    
+          #    File.open(archivo, "a") {|f| f.write "#{name}\n"}
+          #    puts "Creación exitosa"
+          #  else
+          #    puts "Ya existe el profesional"
+          #  end
+          #end
           #warn "TODO: Implementar creación de un o una profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
@@ -70,15 +73,10 @@ module Polycon
           directorio = str_aux + "/.polycon"
           archivo = directorio + "/professionals.txt"
           if(Dir.exists?(directorio))
-            if(File.exists?(archivo))
-              File.open(archivo) do |f| 
-                f.each_line do |line|
-                  puts line
-                end
-              end
-            else puts "No hay profesionales para mostrar"
-            end
-          else puts "No hay profesionales para mostrar"
+            array = Dir.entries(directorio)
+            array.delete(".")
+            array.delete("..")
+            puts array
           end
           #warn "TODO: Implementar listado de profesionales.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
