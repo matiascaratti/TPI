@@ -12,7 +12,32 @@ module Polycon
         ]
 
         def call(name:, **)
-          warn "TODO: Implementar creación de un o una profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          directorio = Dir.pwd 
+          array_aux = directorio.scan(/\w+/)
+          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
+          directorio = str_aux + "/.polycon"
+          archivo = directorio + "/professionals.txt"
+          if(!Dir.exists?(directorio))
+            Dir.mkdir(directorio)
+          end
+          if(!File.exists?(archivo))
+            File.open(archivo, "w+") {|f| f.write "#{name}\n"}
+            puts "Creación exitosa"
+          else
+            existe_profesional = false
+            File.open(archivo) do |f| 
+              f.each_line do |line|
+                existe_profesional = true if line.include? name
+              end
+            end
+            if(!existe_profesional)    
+              File.open(archivo, "a") {|f| f.write "#{name}\n"}
+              puts "Creación exitosa"
+            else
+              puts "Ya existe el profesional"
+            end
+          end
+          #warn "TODO: Implementar creación de un o una profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
