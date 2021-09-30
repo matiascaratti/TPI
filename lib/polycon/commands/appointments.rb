@@ -63,7 +63,25 @@ module Polycon
         ]
 
         def call(date:, professional:)
-          warn "TODO: Implementar borrado de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          directorio = Dir.pwd 
+          array_aux = directorio.scan(/\w+/)
+          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
+          directorio = str_aux + "/.polycon"
+          directorio_profesional = directorio + "/" + professional
+          fecha_hora = date.scan(/\w+/)
+          archivo = directorio_profesional + "/" + fecha_hora[0] + "-" + fecha_hora[1] + "-" + fecha_hora[2] + "_" + fecha_hora[3] + "-" + fecha_hora[4] + ".paf"
+          if(Dir.exists?(directorio))
+            if(Dir.exists?(directorio_profesional))
+              if(File.exists?(archivo))
+                File.delete(archivo)
+                puts "Turno cancelado con éxito"
+              else puts "No se pudo cancelar el turno ya que no existe"
+              end
+            else puts "El profesional no existe en el sistema"
+            end
+          else puts "No se encontraron datos"
+          end
+          #warn "TODO: Implementar borrado de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -77,7 +95,22 @@ module Polycon
         ]
 
         def call(professional:)
-          warn "TODO: Implementar borrado de todos los turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          directorio = Dir.pwd 
+          array_aux = directorio.scan(/\w+/)
+          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
+          directorio = str_aux + "/.polycon"
+          directorio_profesional = directorio + "/" + professional
+          if(Dir.exists?(directorio))
+            if(Dir.exists?(directorio_profesional))
+              FileUtils.rm_rf("#{directorio_profesional}/.", secure: true)
+              puts "Cancelación exitosa de todos los turnos del profesional #{professional}"
+            else
+              puts "No se pudo cancelar los turnos del profesional #{professional} ya que dicho profesional no existe en el sistema"
+            end
+          else
+            puts "No se encontraron datos"
+          end
+          #warn "TODO: Implementar borrado de todos los turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
