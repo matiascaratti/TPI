@@ -48,7 +48,24 @@ module Polycon
         ]
 
         def call(date:, professional:)
-          warn "TODO: Implementar detalles de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          directorio = Dir.pwd 
+          array_aux = directorio.scan(/\w+/)
+          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
+          directorio = str_aux + "/.polycon"
+          directorio_profesional = directorio + "/" + professional
+          fecha_hora = date.scan(/\w+/)
+          archivo = directorio_profesional + "/" + fecha_hora[0] + "-" + fecha_hora[1] + "-" + fecha_hora[2] + "_" + fecha_hora[3] + "-" + fecha_hora[4] + ".paf"
+          if(Dir.exists?(directorio))
+            if(Dir.exists?(directorio_profesional))
+              if(File.exists?(archivo))
+                File.foreach(archivo) { |line| puts line }
+              else puts "No existe el turno ingresado"
+              end
+            else puts "No existe el profesional ingresado"
+            end
+          else puts "No se encontraron datos"
+          end
+          #warn "TODO: Implementar detalles de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -125,8 +142,27 @@ module Polycon
           '"Alma Estevez" --date="2021-09-16" # Lists appointments for Alma Estevez on the specified date'
         ]
 
-        def call(professional:)
-          warn "TODO: Implementar listado de turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+        def call(professional:, date: nil)
+          directorio = Dir.pwd 
+          array_aux = directorio.scan(/\w+/)
+          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
+          directorio = str_aux + "/.polycon"
+          directorio_profesional = directorio + "/" + professional
+          if(Dir.exists?(directorio))
+            if(Dir.exists?(directorio_profesional))
+              if(!date.nil?)
+                Dir.foreach(directorio_profesional) {|f| puts "#{f} \n" if f.include? date}
+              else
+                array = Dir.entries(directorio_profesional)
+                array.delete(".")
+                array.delete("..")
+                puts array
+              end
+            else puts "El profesional ingresado no existe en el sistema"
+            end
+          else puts "No se encontraron datos"
+          end
+          #warn "TODO: Implementar listado de turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
