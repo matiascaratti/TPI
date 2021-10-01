@@ -178,7 +178,28 @@ module Polycon
         ]
 
         def call(old_date:, new_date:, professional:)
-          warn "TODO: Implementar cambio de fecha de turno con fecha '#{old_date}' para que pase a ser '#{new_date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          directorio = Dir.pwd 
+          array_aux = directorio.scan(/\w+/)
+          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
+          directorio = str_aux + "/.polycon"
+          directorio_profesional = directorio + "/" + professional
+          fecha_hora_vieja = old_date.scan(/\w+/)
+          fecha_hora_nueva = new_date.scan(/\w+/)
+          archivo_actual = directorio_profesional + "/" + fecha_hora_vieja[0] + "-" + fecha_hora_vieja[1] + "-" + fecha_hora_vieja[2] + "_" + fecha_hora_vieja[3] + "-" + fecha_hora_vieja[4] + ".paf"
+          archivo_renombrado = directorio_profesional + "/" + fecha_hora_nueva[0] + "-" + fecha_hora_nueva[1] + "-" + fecha_hora_nueva[2] + "_" + fecha_hora_nueva[3] + "-" + fecha_hora_nueva[4] + ".paf"
+          if(Dir.exists?(directorio))
+            if(File.exists?(archivo_actual))
+              if(!File.exists?(archivo_renombrado))
+                File.rename archivo_actual, archivo_renombrado
+                puts "Turno reagendado con éxito"
+              else warn "No se pudo reagendar el turno porque ya existe uno en esa fecha y hora"
+              end
+            else
+              warn "No se pudo reagendar el turno ya que no existe en el sistema"
+            end
+          else warn "No se encontraron datos"
+          end
+          #warn "TODO: Implementar cambio de fecha de turno con fecha '#{old_date}' para que pase a ser '#{new_date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
