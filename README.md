@@ -109,3 +109,7 @@ puede requerir algún trabajo adicional de tu parte.
   * `lib/polycon/version.rb` define la versión de la herramienta, utilizando [SemVer](https://semver.org/lang/es/).
 * `bin/`: directorio donde reside cualquier archivo ejecutable, siendo el más notorio `polycon`
   que se utiliza como punto de entrada para el uso de la herramienta.
+
+
+La carpeta .polycon en el home del usuario es la que contiene la información de los profesionales, la 
+cual está representada por carpetas (cada carpeta es un profesional). Dentro de dichas carpetas se encuentran los archivos .paf correspondientes a los turnos de cada profesional.
