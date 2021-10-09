@@ -12,7 +12,20 @@ module Polycon
         ]
 
         def call(name:, **)
-          warn "TODO: Implementar creación de un o una profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          directorio = Dir.pwd 
+          array_aux = directorio.scan(/\w+/)
+          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
+          directorio = str_aux + "/.polycon"
+          directorio_profesional = directorio + "/" + name
+          if(!Dir.exists?(directorio))
+            Dir.mkdir(directorio)
+          end
+          if(!Dir.exists?(directorio_profesional))
+            Dir.mkdir(directorio_profesional)
+            puts "Creación exitosa"
+          else
+            puts "Ya existe el profesional"
+          end
         end
       end
 
@@ -27,7 +40,29 @@ module Polycon
         ]
 
         def call(name: nil)
-          warn "TODO: Implementar borrado de la o el profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          directorio = Dir.pwd 
+          array_aux = directorio.scan(/\w+/)
+          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
+          directorio = str_aux + "/.polycon"
+          directorio_profesional = directorio + "/" + name
+          if(Dir.exists?(directorio))
+            if(Dir.exists?(directorio_profesional))
+              array = Dir.entries(directorio_profesional)
+              array.delete(".")
+              array.delete("..")
+              if (array.size == 0)
+                Dir.delete(directorio_profesional)
+                puts "Profesional eliminado con éxito"
+              else
+                puts "El profesional cuenta con turnos agendados. No se puede eliminar"
+              end
+            else
+              puts "El profesional no existe en el sistema. No se pudo eliminar"
+            end
+          else
+            puts "No existen datos"
+          end
+          #warn "TODO: Implementar borrado de la o el profesional con nombre '#{name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -39,7 +74,18 @@ module Polycon
         ]
 
         def call(*)
-          warn "TODO: Implementar listado de profesionales.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          directorio = Dir.pwd 
+          array_aux = directorio.scan(/\w+/)
+          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
+          directorio = str_aux + "/.polycon"
+          archivo = directorio + "/professionals.txt"
+          if(Dir.exists?(directorio))
+            array = Dir.entries(directorio)
+            array.delete(".")
+            array.delete("..")
+            puts array
+          end
+          #warn "TODO: Implementar listado de profesionales.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
 
@@ -54,7 +100,23 @@ module Polycon
         ]
 
         def call(old_name:, new_name:, **)
-          warn "TODO: Implementar renombrado de profesionales con nombre '#{old_name}' para que pase a llamarse '#{new_name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+          directorio = Dir.pwd 
+          array_aux = directorio.scan(/\w+/)
+          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
+          directorio = str_aux + "/.polycon"
+          directorio_profesional = directorio + "/" + old_name
+          nuevo_directorio_profesional = directorio + "/" + new_name
+          if(Dir.exists?(directorio))
+            if(Dir.exists?(directorio_profesional))
+              File.rename directorio_profesional, nuevo_directorio_profesional
+              puts "Profesional renombrado con éxito"
+            else
+              puts "No se pudo renombrar al profesional ya que no existe en el sistema"
+            end
+          else
+            puts "No existen datos"
+          end
+          #warn "TODO: Implementar renombrado de profesionales con nombre '#{old_name}' para que pase a llamarse '#{new_name}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
     end
