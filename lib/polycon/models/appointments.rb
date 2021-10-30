@@ -52,18 +52,19 @@ module Polycon
 
 
             def self.list(professional_directory, date)
+                array = []
                 Utils.ensure_polycon_root_exists()
                 if(Dir.exists?(professional_directory))
                     if(!date.nil?)
-                      Dir.foreach(professional_directory) {|f| puts "#{f} \n" if f.include? date}
+                      Dir.foreach(professional_directory) {|f| array << "#{f}" if f.include? date}
                     else
                       array = Dir.entries(professional_directory)
                       array.delete(".")
                       array.delete("..")
-                      puts array
                     end
                 else puts "El profesional ingresado no existe en el sistema"
                 end
+                return array
             end
 
 
@@ -79,6 +80,19 @@ module Polycon
                     warn "No se pudo reagendar el turno ya que no existe en el sistema"
                 end
             end
+
+            def self.data(file_directory, file_name)
+                dic = {}
+                name = file_name.delete ".paf"
+                date = name.gsub("_","-")
+                date = date.scan(/\w+/)
+                hour = date[3] + ":" + date[4]
+                patient_name = IO.readlines(file_directory)[1].delete "\n"
+                patient_surname = IO.readlines(file_directory)[0].delete "\n"
+                patient = patient_name + " " + patient_surname
+                dic[hour] = patient 
+                return dic
+            end    
         end
     end
 end

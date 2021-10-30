@@ -36,6 +36,7 @@ module Polycon
                 array = Dir.entries(Utils.polycon_directory())
                 array.delete(".")
                 array.delete("..")
+                array.delete("planillas")
                 return array
             end
 

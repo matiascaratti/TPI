@@ -88,7 +88,10 @@ module Polycon
 
         def call(professional:, date: nil)
           professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
-          Polycon::Models::Appointment.list(professional_directory, date)
+          array = Polycon::Models::Appointment.list(professional_directory, date)
+          array.each do |a|
+            puts a
+          end
           #warn "TODO: Implementar listado de turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
