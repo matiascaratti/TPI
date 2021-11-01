@@ -1,3 +1,4 @@
+require 'date'
 module Polycon
     module Models
         module Utils
@@ -53,6 +54,23 @@ module Polycon
                     result = true
                 end
                 return result
+            end
+
+            def self.verify_date_and_hour_format(date)
+                begin
+                    Date.strptime(date, "%Y-%m-%d %H:%M")
+                rescue Date::Error
+                    Kernel.abort("Error en el formato de la fecha")
+                end
+            end
+
+
+            def self.verify_date_format(date)
+                begin
+                    Date.strptime(date, "%Y-%m-%d")
+                rescue Date::Error
+                    Kernel.abort("Error en el formato de la fecha")
+                end
             end
         end
     end

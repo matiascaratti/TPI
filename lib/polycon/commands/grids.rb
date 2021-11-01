@@ -15,6 +15,7 @@ module Polycon
                 option :professional, required: false, desc: 'An optional professional name to filter'
 
                 def call(day: , professional: nil)
+                    Polycon::Models::Utils.verify_date_format(day)
                     if (professional.nil?)
                         professionals = Polycon::Models::Professional.list()
                     else

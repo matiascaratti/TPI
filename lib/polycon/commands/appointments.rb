@@ -16,6 +16,7 @@ module Polycon
         ]
 
         def call(date:, professional:, name:, surname:, phone:, notes: nil)
+          Polycon::Models::Utils.verify_date_and_hour_format(date)
           file = Polycon::Models::Utils.appointment_file_directory(date, professional)
           professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
           Polycon::Models::Appointment.create(professional_directory,name,surname,phone,file,notes)
@@ -34,6 +35,7 @@ module Polycon
         ]
 
         def call(date:, professional:)
+          Polycon::Models::Utils.verify_date_and_hour_format(date)
           file = Polycon::Models::Utils.appointment_file_directory(date, professional)
           professional_directory = Polycon::Models::Utils.polycon_directory + "/" + professional
           Polycon::Models::Appointment.show(professional_directory, file)
@@ -52,6 +54,7 @@ module Polycon
         ]
 
         def call(date:, professional:)
+          Polycon::Models::Utils.verify_date_and_hour_format(date)
           file = Polycon::Models::Utils.appointment_file_directory(date, professional)
           professional_directory = Polycon::Models::Utils.polycon_directory + "/" + professional
           Polycon::Models::Appointment.cancel(professional_directory, file)
@@ -87,6 +90,9 @@ module Polycon
         ]
 
         def call(professional:, date: nil)
+          if(!date.nil?) 
+            Polycon::Models::Utils.verify_date_format(date)
+          end
           professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
           array = Polycon::Models::Appointment.list(professional_directory, date)
           array.each do |a|
@@ -108,6 +114,8 @@ module Polycon
         ]
 
         def call(old_date:, new_date:, professional:)
+          Polycon::Models::Utils.verify_date_and_hour_format(old_date)
+          Polycon::Models::Utils.verify_date_and_hour_format(new_date)
           old_file = Polycon::Models::Utils.appointment_file_directory(old_date, professional)
           new_file = Polycon::Models::Utils.appointment_file_directory(new_date, professional)
           Polycon::Models::Appointment.reschedule(old_file, new_file)
@@ -132,6 +140,7 @@ module Polycon
         ]
 
         def call(date:, professional:, name: nil, surname: nil, phone: nil, notes: nil)
+          Polycon::Models::Utils.verify_date_and_hour_format(date)
           file = Polycon::Models::Utils.appointment_file_directory(date, professional)
           professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
           Polycon::Models::Appointment.edit(professional_directory, file, name, surname, phone, notes)
