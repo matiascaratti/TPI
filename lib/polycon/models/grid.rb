@@ -72,6 +72,7 @@ module Polycon
                 File.open(ruta, "w+") do |f|
                     f.write(template.result binding)
                 end
+                puts "Planilla creada con exito en: #{ruta}"
             end
         end
     end
