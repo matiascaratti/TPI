@@ -131,8 +131,11 @@ module Polycon
           '"2021-09-16 13:00" --professional="Alma Estevez" --notes="Some notes for the appointment" # Only changes the notes for the specified appointment. The rest of the information remains unchanged.',
         ]
 
-        def call(date:, professional:, **options)
-          warn "TODO: Implementar modificación de un turno de la o el profesional '#{professional}' con fecha '#{date}', para cambiarle la siguiente información: #{options}.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+        def call(date:, professional:, name: nil, surname: nil, phone: nil, notes: nil)
+          file = Polycon::Models::Utils.appointment_file_directory(date, professional)
+          professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
+          Polycon::Models::Appointment.edit(professional_directory, file, name, surname, phone, notes)
+          #warn "TODO: Implementar modificación de un turno de la o el profesional '#{professional}' con fecha '#{date}', para cambiarle la siguiente información: #{options}.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
     end

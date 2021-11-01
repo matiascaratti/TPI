@@ -81,6 +81,37 @@ module Polycon
                 end
             end
 
+            def self.edit(professional_directory, file, name, surname, phone, notes)
+                Utils.ensure_polycon_root_exists()
+                if(Dir.exists?(professional_directory))
+                    if(File.exists?(file))
+                        lines = ""
+                        if (!surname.nil?)
+                            lines = lines + surname + "\n"
+                        else  lines = lines + IO.readlines(file)[0]
+                        end
+                        if (!name.nil?)
+                            lines = lines + name + "\n"
+                        else lines = lines + IO.readlines(file)[1]
+                        end
+                        if (!phone.nil?)
+                            lines = lines + phone + "\n"
+                        else lines = lines + IO.readlines(file)[2]
+                        end
+                        if (!notes.nil?)
+                            lines = lines + notes + "\n"
+                        else lines = lines + IO.readlines(file)[3] if (!(IO.readlines(file)[3]).nil?)
+                        end
+                        File.open(file, 'w') do |f|
+                            f.write lines
+                        end
+                        puts "Modificación exitosa"
+                    else warn "El turno no existe"
+                    end
+                else warn "El profesional no existe"
+                end
+            end
+
             def self.data(file_directory, file_name)
                 dic = {}
                 name = file_name.delete ".paf"
