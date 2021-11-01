@@ -3,6 +3,7 @@ module Polycon
     autoload :Professionals, 'polycon/commands/professionals'
     autoload :Appointments, 'polycon/commands/appointments'
     autoload :Version, 'polycon/commands/version'
+    autoload :Grids, 'polycon/commands/grids'
 
     extend Dry::CLI::Registry
 
@@ -24,6 +25,11 @@ module Polycon
     end
 
     register 'version', Version, aliases: ['v', '-v', '--version']
+
+    register 'grids', aliases: ['g'] do |prefix|
+      prefix.register 'filterByDay', Grids::FilterByDay
+      prefix.register 'filterByWeek', Grids::FilterByWeek
+    end
   end
 end
 

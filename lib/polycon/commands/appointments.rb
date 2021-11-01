@@ -16,23 +16,9 @@ module Polycon
         ]
 
         def call(date:, professional:, name:, surname:, phone:, notes: nil)
-          fecha_hora = date.scan(/\w+/)
-          directorio = Dir.pwd 
-          array_aux = directorio.scan(/\w+/)
-          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
-          directorio = str_aux + "/.polycon"
-          directorio_profesional = directorio + "/" + professional
-          archivo = directorio_profesional + "/" + fecha_hora[0] + "-" + fecha_hora[1] + "-" + fecha_hora[2] + "_" + fecha_hora[3] + "-" + fecha_hora[4] + ".paf"
-          if(Dir.exists?(directorio))
-            if(Dir.exists?(directorio_profesional))
-              if(!File.exists?(archivo))
-                File.open(archivo, "w+") {|f| f.write "#{surname}\n#{name}\n#{phone}\n#{notes}"}
-              else puts "No se pudo agendar el turno, debido a que ya existe un turno para esa fecha con ese profesional"
-              end
-            else puts "No se pudo agendar el turno, debido a que el profesional no existe en el sistema"
-            end
-          else puts "No existen datos"
-          end  
+          file = Polycon::Models::Utils.appointment_file_directory(date, professional)
+          professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
+          Polycon::Models::Appointment.create(professional_directory,name,surname,phone,file,notes)
           #warn "TODO: Implementar creación de un turno con fecha '#{date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
@@ -48,23 +34,9 @@ module Polycon
         ]
 
         def call(date:, professional:)
-          directorio = Dir.pwd 
-          array_aux = directorio.scan(/\w+/)
-          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
-          directorio = str_aux + "/.polycon"
-          directorio_profesional = directorio + "/" + professional
-          fecha_hora = date.scan(/\w+/)
-          archivo = directorio_profesional + "/" + fecha_hora[0] + "-" + fecha_hora[1] + "-" + fecha_hora[2] + "_" + fecha_hora[3] + "-" + fecha_hora[4] + ".paf"
-          if(Dir.exists?(directorio))
-            if(Dir.exists?(directorio_profesional))
-              if(File.exists?(archivo))
-                File.foreach(archivo) { |line| puts line }
-              else puts "No existe el turno ingresado"
-              end
-            else puts "No existe el profesional ingresado"
-            end
-          else puts "No se encontraron datos"
-          end
+          file = Polycon::Models::Utils.appointment_file_directory(date, professional)
+          professional_directory = Polycon::Models::Utils.polycon_directory + "/" + professional
+          Polycon::Models::Appointment.show(professional_directory, file)
           #warn "TODO: Implementar detalles de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
@@ -80,24 +52,9 @@ module Polycon
         ]
 
         def call(date:, professional:)
-          directorio = Dir.pwd 
-          array_aux = directorio.scan(/\w+/)
-          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
-          directorio = str_aux + "/.polycon"
-          directorio_profesional = directorio + "/" + professional
-          fecha_hora = date.scan(/\w+/)
-          archivo = directorio_profesional + "/" + fecha_hora[0] + "-" + fecha_hora[1] + "-" + fecha_hora[2] + "_" + fecha_hora[3] + "-" + fecha_hora[4] + ".paf"
-          if(Dir.exists?(directorio))
-            if(Dir.exists?(directorio_profesional))
-              if(File.exists?(archivo))
-                File.delete(archivo)
-                puts "Turno cancelado con éxito"
-              else puts "No se pudo cancelar el turno ya que no existe"
-              end
-            else puts "El profesional no existe en el sistema"
-            end
-          else puts "No se encontraron datos"
-          end
+          file = Polycon::Models::Utils.appointment_file_directory(date, professional)
+          professional_directory = Polycon::Models::Utils.polycon_directory + "/" + professional
+          Polycon::Models::Appointment.cancel(professional_directory, file)
           #warn "TODO: Implementar borrado de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
@@ -112,21 +69,8 @@ module Polycon
         ]
 
         def call(professional:)
-          directorio = Dir.pwd 
-          array_aux = directorio.scan(/\w+/)
-          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
-          directorio = str_aux + "/.polycon"
-          directorio_profesional = directorio + "/" + professional
-          if(Dir.exists?(directorio))
-            if(Dir.exists?(directorio_profesional))
-              FileUtils.rm_rf("#{directorio_profesional}/.", secure: true)
-              puts "Cancelación exitosa de todos los turnos del profesional #{professional}"
-            else
-              puts "No se pudo cancelar los turnos del profesional #{professional} ya que dicho profesional no existe en el sistema"
-            end
-          else
-            puts "No se encontraron datos"
-          end
+          professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
+          Polycon::Models::Appointment.cancellAll(professional_directory, professional)
           #warn "TODO: Implementar borrado de todos los turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
@@ -143,24 +87,10 @@ module Polycon
         ]
 
         def call(professional:, date: nil)
-          directorio = Dir.pwd 
-          array_aux = directorio.scan(/\w+/)
-          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
-          directorio = str_aux + "/.polycon"
-          directorio_profesional = directorio + "/" + professional
-          if(Dir.exists?(directorio))
-            if(Dir.exists?(directorio_profesional))
-              if(!date.nil?)
-                Dir.foreach(directorio_profesional) {|f| puts "#{f} \n" if f.include? date}
-              else
-                array = Dir.entries(directorio_profesional)
-                array.delete(".")
-                array.delete("..")
-                puts array
-              end
-            else puts "El profesional ingresado no existe en el sistema"
-            end
-          else puts "No se encontraron datos"
+          professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
+          array = Polycon::Models::Appointment.list(professional_directory, date)
+          array.each do |a|
+            puts a
           end
           #warn "TODO: Implementar listado de turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
@@ -178,27 +108,9 @@ module Polycon
         ]
 
         def call(old_date:, new_date:, professional:)
-          directorio = Dir.pwd 
-          array_aux = directorio.scan(/\w+/)
-          str_aux = "/" + array_aux[0] + "/" + array_aux[1]
-          directorio = str_aux + "/.polycon"
-          directorio_profesional = directorio + "/" + professional
-          fecha_hora_vieja = old_date.scan(/\w+/)
-          fecha_hora_nueva = new_date.scan(/\w+/)
-          archivo_actual = directorio_profesional + "/" + fecha_hora_vieja[0] + "-" + fecha_hora_vieja[1] + "-" + fecha_hora_vieja[2] + "_" + fecha_hora_vieja[3] + "-" + fecha_hora_vieja[4] + ".paf"
-          archivo_renombrado = directorio_profesional + "/" + fecha_hora_nueva[0] + "-" + fecha_hora_nueva[1] + "-" + fecha_hora_nueva[2] + "_" + fecha_hora_nueva[3] + "-" + fecha_hora_nueva[4] + ".paf"
-          if(Dir.exists?(directorio))
-            if(File.exists?(archivo_actual))
-              if(!File.exists?(archivo_renombrado))
-                File.rename archivo_actual, archivo_renombrado
-                puts "Turno reagendado con éxito"
-              else warn "No se pudo reagendar el turno porque ya existe uno en esa fecha y hora"
-              end
-            else
-              warn "No se pudo reagendar el turno ya que no existe en el sistema"
-            end
-          else warn "No se encontraron datos"
-          end
+          old_file = Polycon::Models::Utils.appointment_file_directory(old_date, professional)
+          new_file = Polycon::Models::Utils.appointment_file_directory(new_date, professional)
+          Polycon::Models::Appointment.reschedule(old_file, new_file)
           #warn "TODO: Implementar cambio de fecha de turno con fecha '#{old_date}' para que pase a ser '#{new_date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
@@ -219,8 +131,11 @@ module Polycon
           '"2021-09-16 13:00" --professional="Alma Estevez" --notes="Some notes for the appointment" # Only changes the notes for the specified appointment. The rest of the information remains unchanged.',
         ]
 
-        def call(date:, professional:, **options)
-          warn "TODO: Implementar modificación de un turno de la o el profesional '#{professional}' con fecha '#{date}', para cambiarle la siguiente información: #{options}.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
+        def call(date:, professional:, name: nil, surname: nil, phone: nil, notes: nil)
+          file = Polycon::Models::Utils.appointment_file_directory(date, professional)
+          professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
+          Polycon::Models::Appointment.edit(professional_directory, file, name, surname, phone, notes)
+          #warn "TODO: Implementar modificación de un turno de la o el profesional '#{professional}' con fecha '#{date}', para cambiarle la siguiente información: #{options}.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
       end
     end
