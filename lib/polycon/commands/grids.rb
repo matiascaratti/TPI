@@ -5,6 +5,11 @@ module Polycon
                 argument :week, required: true, desc: 'A week to generate the grid'
                 option :professional, required: false, desc: 'An optional professional name to filter'
 
+                example [
+                    '"2021-09-16" --professional="Alma Estevez"',
+                    '"2021-09-16"'
+                ]
+
                 def call(week: , professional: nil)
 
                 end
@@ -14,14 +19,19 @@ module Polycon
                 argument :day, required: true, desc: 'A day to generate the grid'
                 option :professional, required: false, desc: 'An optional professional name to filter'
 
+                example [
+                    '"2021-09-16" --professional="Alma Estevez"',
+                    '"2021-09-16"'
+                ]
+
                 def call(day: , professional: nil)
-                    Polycon::Models::Utils.verify_date_format(day)
+                    Polycon::Utils.verify_date_format(day)
                     if (professional.nil?)
                         professionals = Polycon::Models::Professional.list()
                     else
                         professionals = [professional]
                     end
-                    Polycon::Models::Grid.filterByDay(day, professionals)
+                    Polycon::Grid.filterByDay(day, professionals)
                 end
             end
         end

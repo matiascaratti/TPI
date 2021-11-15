@@ -16,9 +16,9 @@ module Polycon
         ]
 
         def call(date:, professional:, name:, surname:, phone:, notes: nil)
-          Polycon::Models::Utils.verify_date_and_hour_format(date)
-          file = Polycon::Models::Utils.appointment_file_directory(date, professional)
-          professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
+          Polycon::Utils.verify_date_and_hour_format(date)
+          file = Polycon::Utils.appointment_file_directory(date, professional)
+          professional_directory = Polycon::Utils.polycon_directory() + "/" + professional
           Polycon::Models::Appointment.create(professional_directory,name,surname,phone,file,notes)
           #warn "TODO: Implementar creación de un turno con fecha '#{date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
@@ -35,9 +35,9 @@ module Polycon
         ]
 
         def call(date:, professional:)
-          Polycon::Models::Utils.verify_date_and_hour_format(date)
-          file = Polycon::Models::Utils.appointment_file_directory(date, professional)
-          professional_directory = Polycon::Models::Utils.polycon_directory + "/" + professional
+          Polycon::Utils.verify_date_and_hour_format(date)
+          file = Polycon::Utils.appointment_file_directory(date, professional)
+          professional_directory = Polycon::Utils.polycon_directory + "/" + professional
           Polycon::Models::Appointment.show(professional_directory, file)
           #warn "TODO: Implementar detalles de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
@@ -54,9 +54,9 @@ module Polycon
         ]
 
         def call(date:, professional:)
-          Polycon::Models::Utils.verify_date_and_hour_format(date)
-          file = Polycon::Models::Utils.appointment_file_directory(date, professional)
-          professional_directory = Polycon::Models::Utils.polycon_directory + "/" + professional
+          Polycon::Utils.verify_date_and_hour_format(date)
+          file = Polycon::Utils.appointment_file_directory(date, professional)
+          professional_directory = Polycon::Utils.polycon_directory + "/" + professional
           Polycon::Models::Appointment.cancel(professional_directory, file)
           #warn "TODO: Implementar borrado de un turno con fecha '#{date}' y profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
@@ -72,7 +72,7 @@ module Polycon
         ]
 
         def call(professional:)
-          professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
+          professional_directory = Polycon::Utils.polycon_directory() + "/" + professional
           Polycon::Models::Appointment.cancellAll(professional_directory, professional)
           #warn "TODO: Implementar borrado de todos los turnos de la o el profesional '#{professional}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
@@ -91,9 +91,9 @@ module Polycon
 
         def call(professional:, date: nil)
           if(!date.nil?) 
-            Polycon::Models::Utils.verify_date_format(date)
+            Polycon::Utils.verify_date_format(date)
           end
-          professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
+          professional_directory = Polycon::Utils.polycon_directory() + "/" + professional
           array = Polycon::Models::Appointment.list(professional_directory, date)
           array.each do |a|
             puts a
@@ -114,10 +114,10 @@ module Polycon
         ]
 
         def call(old_date:, new_date:, professional:)
-          Polycon::Models::Utils.verify_date_and_hour_format(old_date)
-          Polycon::Models::Utils.verify_date_and_hour_format(new_date)
-          old_file = Polycon::Models::Utils.appointment_file_directory(old_date, professional)
-          new_file = Polycon::Models::Utils.appointment_file_directory(new_date, professional)
+          Polycon::Utils.verify_date_and_hour_format(old_date)
+          Polycon::Utils.verify_date_and_hour_format(new_date)
+          old_file = Polycon::Utils.appointment_file_directory(old_date, professional)
+          new_file = Polycon::Utils.appointment_file_directory(new_date, professional)
           Polycon::Models::Appointment.reschedule(old_file, new_file)
           #warn "TODO: Implementar cambio de fecha de turno con fecha '#{old_date}' para que pase a ser '#{new_date}'.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end
@@ -140,9 +140,9 @@ module Polycon
         ]
 
         def call(date:, professional:, name: nil, surname: nil, phone: nil, notes: nil)
-          Polycon::Models::Utils.verify_date_and_hour_format(date)
-          file = Polycon::Models::Utils.appointment_file_directory(date, professional)
-          professional_directory = Polycon::Models::Utils.polycon_directory() + "/" + professional
+          Polycon::Utils.verify_date_and_hour_format(date)
+          file = Polycon::Utils.appointment_file_directory(date, professional)
+          professional_directory = Polycon::Utils.polycon_directory() + "/" + professional
           Polycon::Models::Appointment.edit(professional_directory, file, name, surname, phone, notes)
           #warn "TODO: Implementar modificación de un turno de la o el profesional '#{professional}' con fecha '#{date}', para cambiarle la siguiente información: #{options}.\nPodés comenzar a hacerlo en #{__FILE__}:#{__LINE__}."
         end

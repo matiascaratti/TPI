@@ -1,6 +1,5 @@
 require 'date'
 module Polycon
-    module Models
         module Utils
             def self.polycon_directory()
                 directory = Dir.pwd 
@@ -72,7 +71,14 @@ module Polycon
                     Kernel.abort("Error en el formato de la fecha")
                 end
             end
+
+            def self.toDateFormat(string)
+                name = string.delete ".paf"
+                date = name.gsub("_","-")
+                date = date.scan(/\w+/)
+                name = date[0] + "/" + date[1] + "/" + date[2] + " " + date[3] + ":" + date[4]
+                return name
+            end
         end
-    end
 end
 

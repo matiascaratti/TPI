@@ -4,9 +4,9 @@ module Polycon
 
 
             def self.create(name)
-                Utils.ensure_polycon_root_exists()
-                if(!Utils.professional_exists?(name)) 
-                    directory = Utils.polycon_directory() + "/" + name
+                Polycon::Utils.ensure_polycon_root_exists()
+                if(!Polycon::Utils.professional_exists?(name)) 
+                    directory = Polycon::Utils.polycon_directory() + "/" + name
                     Dir.mkdir(directory)
                     puts "Creación exitosa"
                 else
@@ -16,10 +16,10 @@ module Polycon
 
 
             def self.delete(name)
-                Utils.ensure_polycon_root_exists()
-                if(Utils.professional_exists?(name))
-                    if(!Utils.professional_has_appointments?(name))
-                        professional_directory = Utils.polycon_directory + "/" + name
+                Polycon::Utils.ensure_polycon_root_exists()
+                if(Polycon::Utils.professional_exists?(name))
+                    if(!Polycon::Utils.professional_has_appointments?(name))
+                        professional_directory = Polycon::Utils.polycon_directory + "/" + name
                         Dir.delete(professional_directory)
                         puts "Profesional eliminado con éxito"
                     else
@@ -32,8 +32,8 @@ module Polycon
 
 
             def self.list()
-                Utils.ensure_polycon_root_exists()
-                array = Dir.entries(Utils.polycon_directory())
+                Polycon::Utils.ensure_polycon_root_exists()
+                array = Dir.entries(Polycon::Utils.polycon_directory())
                 array.delete(".")
                 array.delete("..")
                 array.delete("planillas")
@@ -42,11 +42,11 @@ module Polycon
 
 
             def self.rename(old_name, new_name)
-                Utils.ensure_polycon_root_exists()
-                if(Utils.professional_exists?(old_name))
-                    if(!Utils.professional_exists?(new_name))
-                        old_directory = Utils.polycon_directory() + "/" + old_name
-                        new_directory = Utils.polycon_directory() + "/" + new_name
+                Polycon::Utils.ensure_polycon_root_exists()
+                if(Polycon::Utils.professional_exists?(old_name))
+                    if(!Polycon::Utils.professional_exists?(new_name))
+                        old_directory = Polycon::Utils.polycon_directory() + "/" + old_name
+                        new_directory = Polycon::Utils.polycon_directory() + "/" + new_name
                         File.rename old_directory, new_directory
                         puts "Profesional renombrado con éxito"
                     else
