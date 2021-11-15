@@ -12,7 +12,7 @@ module Polycon
         ]
 
         def call(name:, **)
-          if(!Polycon::Models::Utils.isEmpty?(name))
+          if(!Polycon::Utils.isEmpty?(name))
             Polycon::Models::Professional.create(name)
           else warn "El nombre no puede contener solo espacios"
           end
@@ -57,7 +57,7 @@ module Polycon
         ]
 
         def call(old_name:, new_name:, **)
-          if(!Polycon::Models::Utils.isEmpty?(new_name))
+          if(!Polycon::Utils.isEmpty?(new_name))
             Polycon::Models::Professional.rename(old_name, new_name)
           else warn "El nombre no puede contener solo espacios"
           end

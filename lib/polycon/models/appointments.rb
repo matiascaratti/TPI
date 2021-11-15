@@ -3,7 +3,7 @@ module Polycon
         class Appointment
 
             def self.create(professional_directory, name, surname, phone, file, notes)
-                Utils.ensure_polycon_root_exists()
+                Polycon::Utils.ensure_polycon_root_exists()
                 if (Dir.exists?(professional_directory))
                     if(!File.exists?(file))
                         File.open(file, "w+") {|f| f.write "#{surname}\n#{name}\n#{phone}\n#{notes}"}
@@ -16,7 +16,7 @@ module Polycon
 
 
             def self.show(professional_directory, file)
-                Utils.ensure_polycon_root_exists()
+                Polycon::Utils.ensure_polycon_root_exists()
                 if(Dir.exists?(professional_directory))
                     if(File.exists?(file))
                       File.foreach(file) { |line| puts line }
@@ -28,7 +28,7 @@ module Polycon
 
 
             def self.cancel(professional_directory, file)
-                Utils.ensure_polycon_root_exists()
+                Polycon::Utils.ensure_polycon_root_exists()
                 if(Dir.exists?(professional_directory))
                     if(File.exists?(file))
                       File.delete(file)
@@ -41,7 +41,7 @@ module Polycon
 
 
             def self.cancellAll(professional_directory, professional)
-                Utils.ensure_polycon_root_exists()
+                Polycon::Utils.ensure_polycon_root_exists()
                 if(Dir.exists?(professional_directory))
                     FileUtils.rm_rf("#{professional_directory}/.", secure: true)
                     puts "Cancelación exitosa de todos los turnos del profesional #{professional}"
@@ -53,7 +53,8 @@ module Polycon
 
             def self.list(professional_directory, date)
                 array = []
-                Utils.ensure_polycon_root_exists()
+                array_dos = []
+                Polycon::Utils.ensure_polycon_root_exists()
                 if(Dir.exists?(professional_directory))
                     if(!date.nil?)
                       Dir.foreach(professional_directory) {|f| array << "#{f}" if f.include? date}
@@ -62,14 +63,17 @@ module Polycon
                       array.delete(".")
                       array.delete("..")
                     end
+                    array.each do |a|
+                        array_dos << Polycon::Utils.toDateFormat(a.to_str)
+                    end
                 else puts "El profesional ingresado no existe en el sistema"
                 end
-                return array
+                return array_dos
             end
 
 
             def self.reschedule(old_file, new_file)
-                Utils.ensure_polycon_root_exists()
+                Polycon::Utils.ensure_polycon_root_exists()
                 if(File.exists?(old_file))
                     if(!File.exists?(new_file))
                       File.rename old_file, new_file
@@ -82,7 +86,7 @@ module Polycon
             end
 
             def self.edit(professional_directory, file, name, surname, phone, notes)
-                Utils.ensure_polycon_root_exists()
+                Polycon::Utils.ensure_polycon_root_exists()
                 if(Dir.exists?(professional_directory))
                     if(File.exists?(file))
                         lines = ""
