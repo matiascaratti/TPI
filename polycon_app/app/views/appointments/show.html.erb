@@ -1,0 +1,26 @@
+<table>
+    <tr>
+        <thead>
+            <th>Profesional</th>
+            <th>Fecha</th>
+            <th>Nombre del paciente</th>
+            <th>Apellido del paciente</th>
+            <th>Telefono del paciente</th>
+            <th>Notas</th>
+        </thead>
+    </tr>
+    <tr>
+        <td><%= @professional.name %></td>
+        <td><%= I18n.l(@appointment.date) %></td>
+        <td><%= @appointment.patient_name %></td>
+        <td><%= @appointment.patient_surname %></td>
+        <td><%= @appointment.patient_phone %></td>
+        <td><%= @appointment.notes %></td>
+        <td>
+            <%= link_to "Editar", edit_professional_appointment_path(@professional, @appointment)%>
+            <%= link_to "Reagendar", reschedule_professional_appointment_path(@professional, @appointment)%>
+            <%= link_to "Cancelar", [@professional, @appointment], method: :delete, data: { confirm: "Desea cancelar este turno?"} %>
+        </td>
+    </tr>
+</table>
+<%= link_to 'Volver', professional_appointments_path(@professional)%>
