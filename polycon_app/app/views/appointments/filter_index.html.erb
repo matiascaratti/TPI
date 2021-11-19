@@ -1,0 +1,19 @@
+<h1>Listado de Turnos de <%=@professional.name%><h1>
+<table>
+    <tr>
+        <thead>
+            <th>Fecha</th>
+            <th>Paciente</th>
+        </thead>
+    </tr>
+    <% @appointments.each do |a| %>
+        <tr>
+            <td><%= I18n.l(a.date) %></td>
+            <td><%= a.patient_name %></td>
+            <td>
+                <%= link_to "Ver", [@professional, a]%>
+            </td>
+        </tr>
+    <% end %>
+</table>
+<%= link_to "Volver", professional_appointments_path(@professional)%>

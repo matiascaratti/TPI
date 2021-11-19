@@ -1,0 +1,15 @@
+<table>
+    <tr>
+        <thead>
+            <th>Nombre</th>
+        </thead>
+    </tr>
+    <tr>
+        <td><%= @professional.name %></td>
+        <td>
+            <%= link_to "Editar" %>
+            <%= link_to "Eliminar" %>
+        </td>
+    </tr>
+</table>
+<%= link_to "Volver", professionals_path%>
