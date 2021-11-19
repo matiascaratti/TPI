@@ -1,9 +1,10 @@
 <%= form_for @professional do |p| %>
     <div>
-        <%= p.label :name %>
-        <%= p.text_field :name %>
+        <%= p.label :name, "Nombre del profesional:"%>
+        <%= p.text_field :name, required:'true'%>
     </div>
     <div>
-        <%= p.submit %>
+        <%= p.submit "Guardar"%>
     </div>
 <% end %>
+<%= link_to "Volver", professionals_path%>

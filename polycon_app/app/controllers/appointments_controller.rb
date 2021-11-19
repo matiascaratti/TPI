@@ -1,3 +1,4 @@
+require 'date'
 class AppointmentsController < ApplicationController
 
     def index
@@ -58,9 +59,15 @@ class AppointmentsController < ApplicationController
     end
 
     #def filter_by_day
-    #    @appointments = Appointment.where(professional: params[:professional_id] and "date > params[:date_filter]").order(:date)
     #    @professional = Professional.find(params[:professional_id])
+    #end
 
+
+    def filter_index
+        next_day = Date.strptime(params[:date_filter], "%Y-%m-%d") + 1
+        @appointments = Appointment.where(date: (params[:date_filter]..next_day.to_s)).where(professional_id:1).order(:date)
+        @professional = Professional.find(params[:professional_id])
+    end
 
     private
         def appointment_params

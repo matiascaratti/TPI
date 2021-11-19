@@ -1,4 +1,16 @@
 <h1>Listado de Turnos de <%=@professional.name%><h1>
+<%=form_with url: filter_index_professional_appointments_path(@professional), method: :get do |form|%>
+    <div>
+        <%= form.label :date_filter, "Filtrar por fecha"%>
+        <%= form.date_field :date_filter, required:'true' %>
+    </div>
+    <div>
+        <%= form.text_field :professional_id, value: @professional.id, type:'hidden'%>
+    </div>
+    <div>
+        <%= form.submit "Filtrar"%>
+    </div>
+<% end %>
 <table>
     <tr>
         <thead>

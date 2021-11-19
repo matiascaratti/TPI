@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     resources :appointments do
       collection do
         delete 'cancel-all', action: 'cancel_all'
+        get 'filter-index', action: 'filter_index'
       end
       member do
         get 'reschedule', action: 'reschedule'
