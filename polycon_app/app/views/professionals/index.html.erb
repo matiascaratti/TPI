@@ -9,11 +9,22 @@
         <tr>
             <td><%= p.name %></td>
             <td>
-                <%= link_to "Editar", edit_professional_path(p)%>
-                <%= link_to "Eliminar", p, method: :delete, data: { confirm: "Desea eliminar este profesional?"} %>
-                <%= link_to "Turnos", professional_appointments_path(p)%>
+                <% if can? :edit, p %>
+                    <%= link_to "Editar", edit_professional_path(p)%>
+                <% end %>
+                <% if can? :destroy, p %>
+                    <%= link_to "Eliminar", p, method: :delete, data: { confirm: "Desea eliminar este profesional?"} %>
+                <% end %>
+                <% if can? :read, p %>
+                    <%= link_to "Turnos", professional_appointments_path(p)%>
+                <% end %>
             </td>
         </tr>
     <% end %>
 </table>
-<%= link_to "Nuevo Profesional", new_professional_path%>
+<% if can? :create, @professionals %>
+    <%= link_to "Nuevo Profesional", new_professional_path%>
+<% end %>
+<div>
+<li><%= link_to "Cerrar Sesion", destroy_user_session_path, method: :delete %></li>
+</div>

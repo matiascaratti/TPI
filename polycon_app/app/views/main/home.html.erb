@@ -1,0 +1,7 @@
+<h1>Polycon</h1>
+<% if can? :read, @professionals %>
+    <%= link_to "Profesionales", professionals_path%>
+<% end %>
+<div>
+<li><%= link_to "Cerrar Sesion", destroy_user_session_path, method: :delete %></li>
+</div>

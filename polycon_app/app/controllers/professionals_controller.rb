@@ -1,5 +1,6 @@
 class ProfessionalsController < ApplicationController 
-
+    before_action :authenticate_user!
+    load_and_authorize_resource
     def index
         @professionals = Professional.all.order(:name)
     end
@@ -24,7 +25,7 @@ class ProfessionalsController < ApplicationController
     def update
         @professional = Professional.find(params[:id])
         if @professional.update(professional_params)
-            redirect_to professionals_path
+            redirect_to professionals_path, :alert => "Modificación exitosa"
         else
             render :edit
         end
@@ -35,10 +36,14 @@ class ProfessionalsController < ApplicationController
     end
 
     def destroy
-        #Falta eliminar todos los appointments de ese profesional
-        @professional = Professional.find(params[:id])
-        @professional.delete
-        redirect_to professionals_path
+        query = Appointment.where(professional: params[:id])
+        if (query.empty?)
+            @professional = Professional.find(params[:id])
+            @professional.delete
+            redirect_to professionals_path, :alert => "Se eliminó el profesional"
+        else
+            redirect_to professionals_path, :alert => "No se pudo eliminar el profesional ya que posee turnos agendados"
+        end
     end
 
     private

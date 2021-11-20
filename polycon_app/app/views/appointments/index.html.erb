@@ -29,5 +29,9 @@
     <% end %>
 </table>
 <%= link_to "Volver", professionals_path%>
-<%= link_to "Nuevo Turno", new_professional_appointment_path(@professional)%>
-<%= link_to "Cancelar todos", cancel_all_professional_appointments_path(@professional), method: :delete, data: {confirm: 'Deseas cancelar todos los turnos de este profesional?'}%>
+<% if can? :create, @appointments %>
+    <%= link_to "Nuevo Turno", new_professional_appointment_path(@professional)%>
+<% end %>
+<% if can? :cancel_all, @appointments %>
+    <%= link_to "Cancelar todos", cancel_all_professional_appointments_path(@professional), method: :delete, data: {confirm: 'Deseas cancelar todos los turnos de este profesional?'}%>
+<% end %>

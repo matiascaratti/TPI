@@ -1,6 +1,7 @@
 require 'date'
 class AppointmentsController < ApplicationController
-
+    before_action :authenticate_user!
+    load_and_authorize_resource
     def index
         @appointments = Appointment.where(professional: params[:professional_id]).order(:date)
         @professional = Professional.find(params[:professional_id])
@@ -35,7 +36,7 @@ class AppointmentsController < ApplicationController
         @appointment = Appointment.find(params[:id])
         @professional = Professional.find(@appointment.professional_id)
         if @appointment.update(appointment_params)
-            redirect_to  professional_appointments_path(@professional)
+            redirect_to  professional_appointments_path(@professional), :alert => "Modificación exitosa"
         else
             render :edit
         end
@@ -50,18 +51,13 @@ class AppointmentsController < ApplicationController
         @appointment = Appointment.find(params[:id])
         @professional = Professional.find(@appointment.professional_id)
         @appointment.delete
-        redirect_to professional_appointments_path(@professional)
+        redirect_to professional_appointments_path(@professional), :alert => "Se canceló el turno"
     end
 
     def cancel_all
-        Appointment.where(professional: params[:professional_id]).delete_all
-        redirect_to professionals_path
+        @appointments = Appointment.where(professional: params[:professional_id]).delete_all
+        redirect_to professionals_path, :alert => "Se cancelaron todos los turnos"
     end
-
-    #def filter_by_day
-    #    @professional = Professional.find(params[:professional_id])
-    #end
-
 
     def filter_index
         next_day = Date.strptime(params[:date_filter], "%Y-%m-%d") + 1

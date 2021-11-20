@@ -17,9 +17,15 @@
         <td><%= @appointment.patient_phone %></td>
         <td><%= @appointment.notes %></td>
         <td>
-            <%= link_to "Editar", edit_professional_appointment_path(@professional, @appointment)%>
-            <%= link_to "Reagendar", reschedule_professional_appointment_path(@professional, @appointment)%>
-            <%= link_to "Cancelar", [@professional, @appointment], method: :delete, data: { confirm: "Desea cancelar este turno?"} %>
+            <% if can? :edit, @appointment %>
+                <%= link_to "Editar", edit_professional_appointment_path(@professional, @appointment)%>
+            <% end %>
+            <% if can? :update, @appointment %>
+                <%= link_to "Reagendar", reschedule_professional_appointment_path(@professional, @appointment)%>
+            <% end %>
+            <% if can? :destroy, @appointment %>
+                <%= link_to "Cancelar", [@professional, @appointment], method: :delete, data: { confirm: "Desea cancelar este turno?"} %>
+            <% end %>
         </td>
     </tr>
 </table>
