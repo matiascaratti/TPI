@@ -1,19 +1,25 @@
-<h1>Listado de Turnos de <%=@professional.name%><h1>
-<table>
-    <tr>
-        <thead>
+<div><h2>Listado de Turnos de <%=@professional.name%><h2></div>
+<table class="table">
+    <thead>
+        <tr>
             <th>Fecha</th>
             <th>Paciente</th>
-        </thead>
-    </tr>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
     <% @appointments.each do |a| %>
         <tr>
-            <td><%= I18n.l(a.date) %></td>
-            <td><%= a.patient_name %></td>
+            <td><%= l a.date, format: :short %></td>
+            <td><%= a.patient_name + " "+ a.patient_surname%></td>
             <td>
-                <%= link_to "Ver", [@professional, a]%>
+                <%= link_to "Ver", [@professional, a], :class => 'btn btn-mini btn-outline-dark'%>
             </td>
         </tr>
     <% end %>
+    </tbody>
 </table>
-<%= link_to "Volver", professional_appointments_path(@professional)%>
+<%= link_to "Volver", professionals_path, :class => 'btn btn-mini btn-outline-dark'%>
+<% if can? :create, @appointments %>
+    <%= link_to "Nuevo Turno", new_professional_appointment_path(@professional), :class => 'btn btn-mini btn-outline-success'%>
+<% end %>

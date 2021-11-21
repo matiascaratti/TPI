@@ -1,7 +1,7 @@
-<h1>Polycon</h1>
 <% if can? :read, @professionals %>
-    <%= link_to "Profesionales", professionals_path%>
+    <div class="card-body">
+        <h5 class="card-title">Bienvenido/a!</h5>
+        <p class="card-text">En esta aplicación podrás gestionar el policonsultorio</p>
+        <a href="/professionals" class="btn btn-mini btn-outline-dark">Ir</a>
+    </div>
 <% end %>
-<div>
-<li><%= link_to "Cerrar Sesion", destroy_user_session_path, method: :delete %></li>
-</div>

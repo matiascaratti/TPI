@@ -1,32 +1,38 @@
-<table>
-    <tr>
-        <thead>
+<div>
+<h2>Detalles</h2>
+</div>
+<table class="table">
+    <thead>
+        <tr>
             <th>Profesional</th>
             <th>Fecha</th>
             <th>Nombre del paciente</th>
             <th>Apellido del paciente</th>
             <th>Telefono del paciente</th>
             <th>Notas</th>
-        </thead>
-    </tr>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
     <tr>
         <td><%= @professional.name %></td>
-        <td><%= I18n.l(@appointment.date) %></td>
+        <td><%= l @appointment.date, format: :short %></td>
         <td><%= @appointment.patient_name %></td>
         <td><%= @appointment.patient_surname %></td>
         <td><%= @appointment.patient_phone %></td>
         <td><%= @appointment.notes %></td>
         <td>
             <% if can? :edit, @appointment %>
-                <%= link_to "Editar", edit_professional_appointment_path(@professional, @appointment)%>
+                <%= link_to "Editar", edit_professional_appointment_path(@professional, @appointment), :class => 'btn btn-mini btn-outline-dark'%>
             <% end %>
             <% if can? :update, @appointment %>
-                <%= link_to "Reagendar", reschedule_professional_appointment_path(@professional, @appointment)%>
+                <%= link_to "Reagendar", reschedule_professional_appointment_path(@professional, @appointment), :class => 'btn btn-mini btn-outline-dark'%>
             <% end %>
             <% if can? :destroy, @appointment %>
-                <%= link_to "Cancelar", [@professional, @appointment], method: :delete, data: { confirm: "Desea cancelar este turno?"} %>
+                <%= link_to "Cancelar", [@professional, @appointment], method: :delete, data: { confirm: "Desea cancelar este turno?"}, :class => 'btn btn-mini btn-outline-danger' %>
             <% end %>
         </td>
     </tr>
+    </tbody>
 </table>
-<%= link_to 'Volver', professional_appointments_path(@professional)%>
+<%= link_to 'Volver', professional_appointments_path(@professional), :class => 'btn btn-mini btn-outline-dark'%>

@@ -1,30 +1,37 @@
-<h1>Listado de Profesionales<h1>
-<table>
-    <tr>
-        <thead>
+<div>
+    <h2>Listado de Profesionales</h2>
+</div>
+<table class="table">
+    <thead>
+        <tr>
             <th scope="col">Nombre</th>
-        </thead>
-    </tr>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Email</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Acciones</th>
+        <tr>
+    </thead>
+    <tbody>
     <% @professionals.each do |p| %>
         <tr>
             <td><%= p.name %></td>
+            <td><%= p.phone %></td>
+            <td><%= p.email %></td>
+            <td><%= p.specialty %></td>
             <td>
                 <% if can? :edit, p %>
-                    <%= link_to "Editar", edit_professional_path(p)%>
-                <% end %>
-                <% if can? :destroy, p %>
-                    <%= link_to "Eliminar", p, method: :delete, data: { confirm: "Desea eliminar este profesional?"} %>
+                    <%= link_to "Editar", edit_professional_path(p), :class => 'btn btn-mini btn-outline-dark'%>
                 <% end %>
                 <% if can? :read, p %>
-                    <%= link_to "Turnos", professional_appointments_path(p)%>
+                    <%= link_to "Turnos", professional_appointments_path(p), :class => 'btn btn-mini btn-outline-dark'%>
+                <% end %>
+                <% if can? :destroy, p %>
+                    <%= link_to "Eliminar", p, method: :delete, data: { confirm: "Desea eliminar este profesional?"}, :class => 'btn btn-mini btn-outline-danger' %>
                 <% end %>
             </td>
         </tr>
     <% end %>
 </table>
 <% if can? :create, @professionals %>
-    <%= link_to "Nuevo Profesional", new_professional_path%>
+    <%= link_to "Nuevo Profesional", new_professional_path, :class => 'btn btn-mini btn-outline-success'%>
 <% end %>
-<div>
-<li><%= link_to "Cerrar Sesion", destroy_user_session_path, method: :delete %></li>
-</div>

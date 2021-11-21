@@ -8,6 +8,22 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag "style" %>
+    <nav class="navbar navbar-light" style="background-color: #FF2525; ">
+      <a class="navbar-logo" href="/" >
+      <%= image_tag 'logo.png', width:90, height:80 %>
+      </a>
+      <% if !user_session.nil? %>
+        <ul class="navbar-nav flex-row ml-md-auto d-md-flex">
+          <% if can? :read, @professionals %>
+            <li>
+              <a class="btn btn-mini btn-outline-light " href="/professionals">Profesionales</a>
+            </li>
+          <% end %>
+          <li><%= link_to "Cerrar Sesión", destroy_user_session_path, method: :delete, data: {confirm: 'Deseas cerrar sesión?'},:class => "btn btn-mini btn-outline-light " %></li>
+        </ul>
+      <% end %>
+    </nav>
   </head>
 
   <body>
@@ -15,4 +31,7 @@
     <p class="alert"><%= alert %></p>
     <%= yield %>
   </body>
+  <footer class="footer">
+  <p style="color:#F9F7F4";>Desarrollado por Matías Caratti</p>
+  </footer>
 </html>

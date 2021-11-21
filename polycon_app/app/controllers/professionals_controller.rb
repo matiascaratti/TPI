@@ -48,6 +48,6 @@ class ProfessionalsController < ApplicationController
 
     private
         def professional_params
-            params.require(:professional).permit(:name)
+            params.require(:professional).permit(:name, :phone, :email, :specialty)
         end
 end
