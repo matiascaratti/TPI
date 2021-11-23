@@ -3,7 +3,7 @@ class AppointmentsController < ApplicationController
     before_action :authenticate_user!
     load_and_authorize_resource
     def index
-        @appointments = Appointment.where(professional: params[:professional_id]).order(:date)
+        @appointments = Appointment.where(professional: params[:professional_id]).order(:date).paginate(:page => params[:page], :per_page => 10)
         @professional = Professional.find(params[:professional_id])
     end
 
@@ -61,7 +61,7 @@ class AppointmentsController < ApplicationController
 
     def filter_index
         next_day = Date.strptime(params[:date_filter], "%Y-%m-%d") + 1
-        @appointments = Appointment.where(date: (params[:date_filter]..next_day.to_s)).where(professional_id: params[:professional_id]).order(:date)
+        @appointments = Appointment.where(date: (params[:date_filter]..next_day.to_s)).where(professional_id: params[:professional_id]).order(:date).paginate(:page => params[:page], :per_page => 10)
         @professional = Professional.find(params[:professional_id])
     end
 

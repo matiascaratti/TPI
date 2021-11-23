@@ -22,7 +22,7 @@ Appointments
 Para la autenticación de usuarios utilicé la gema Devise
 Para los permisos utilicé la gema CanCanCan
 Para el diseño de la pagina utilicé Bootstrap y jquery-rails
-
+Para la paginación utilicé las gemas will_paginate y will_paginate-bootstrap
 
 
 
@@ -43,4 +43,4 @@ en ese archivo también se encuentran definidos profesionales y turnos
 
 
 Para hacer funcionar la aplicación: 
-Posicionarse en la carpeta polycon_app desde la terminar y ejecutar el comando: rails s
+Posicionarse en la carpeta polycon_app desde la terminal y ejecutar el comando: rails s

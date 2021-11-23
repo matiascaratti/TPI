@@ -1,6 +1,4 @@
-<div>
-    <h2>Listado de Profesionales</h2>
-</div>
+<h2>Listado de Profesionales</h2><br>
 <table class="table">
     <thead>
         <tr>
@@ -35,3 +33,6 @@
 <% if can? :create, @professionals %>
     <%= link_to "Nuevo Profesional", new_professional_path, :class => 'btn btn-mini btn-outline-success'%>
 <% end %>
+<div><br>
+<%= will_paginate @professionals , renderer: BootstrapPagination::Rails %>
+</div>

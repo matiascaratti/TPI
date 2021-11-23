@@ -40,3 +40,6 @@
 <% if can? :cancel_all, @appointments %>
     <%= link_to "Cancelar todos", cancel_all_professional_appointments_path(@professional), method: :delete, data: {confirm: 'Deseas cancelar todos los turnos de este profesional?'}, :class => 'btn btn-mini btn-outline-danger'%>
 <% end %>
+<div><br>
+<%= will_paginate @appointments , renderer: BootstrapPagination::Rails %>
+</div>

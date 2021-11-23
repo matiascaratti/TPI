@@ -23,3 +23,6 @@
 <% if can? :create, @appointments %>
     <%= link_to "Nuevo Turno", new_professional_appointment_path(@professional), :class => 'btn btn-mini btn-outline-success'%>
 <% end %>
+<div><br>
+<%= will_paginate @appointments , renderer: BootstrapPagination::Rails %>
+</div>
