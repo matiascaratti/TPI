@@ -7,7 +7,7 @@
         <%= a.text_field :professional_id, value: @professional.id, type:'hidden'%>
     </div>
     <div>
-        <%= a.submit "Guardar"%>
+        <%= link_to 'Volver', professional_appointments_path(@professional), :class => 'btn btn-mini btn-outline-dark' %>
+        <%= a.submit "Guardar", :class => 'btn btn-mini btn-outline-success'%>
     </div>
 <% end %>
-<%= link_to 'Volver', professional_appointments_path(@professional) %>

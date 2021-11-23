@@ -19,7 +19,7 @@
     <% end %>
     </tbody>
 </table>
-<%= link_to "Volver", professionals_path, :class => 'btn btn-mini btn-outline-dark'%>
+<%= link_to "Volver", professional_appointments_path(@professional), :class => 'btn btn-mini btn-outline-dark'%>
 <% if can? :create, @appointments %>
     <%= link_to "Nuevo Turno", new_professional_appointment_path(@professional), :class => 'btn btn-mini btn-outline-success'%>
 <% end %>

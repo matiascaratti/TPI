@@ -9,6 +9,15 @@
   </div>
 
   <div class="field">
+  <%= f.label :day_week, "Rol: ", :class => "col-sm-2 col-form-label"%>
+    <select name="day_week" id="day_week">
+        <option value="admin">Administrador</option>
+        <option value="assistant">Asistente</option>
+        <option value="constultant">Consultador</option>
+    </select>
+  </div>
+
+  <div class="field">
     <%= f.label :password %>
     <% if @minimum_password_length %>
     <em>(<%= @minimum_password_length %> characters minimum)</em>

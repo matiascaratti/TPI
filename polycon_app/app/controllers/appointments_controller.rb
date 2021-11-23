@@ -18,7 +18,7 @@ class AppointmentsController < ApplicationController
         if @appointment.save
             redirect_to professional_appointments_path(@professional), notice: params[:date]
         else
-            render :new
+            render :new, :alert => "No se pudo agendar el turno debido a que ya existe un turno en la fecha y hora ingresada para este profesional"
         end
     end
 
@@ -38,7 +38,7 @@ class AppointmentsController < ApplicationController
         if @appointment.update(appointment_params)
             redirect_to  professional_appointments_path(@professional), :alert => "Modificación exitosa"
         else
-            render :edit
+            redirect_to [@professional, @appointment], :alert => "No se pudo agendar el turno debido a que ya existe un turno en la fecha y hora ingresada para este profesional"
         end
     end
 
@@ -61,7 +61,7 @@ class AppointmentsController < ApplicationController
 
     def filter_index
         next_day = Date.strptime(params[:date_filter], "%Y-%m-%d") + 1
-        @appointments = Appointment.where(date: (params[:date_filter]..next_day.to_s)).where(professional_id:1).order(:date)
+        @appointments = Appointment.where(date: (params[:date_filter]..next_day.to_s)).where(professional_id: params[:professional_id]).order(:date)
         @professional = Professional.find(params[:professional_id])
     end
 

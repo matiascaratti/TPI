@@ -16,10 +16,12 @@
       <% if !user_session.nil? %>
         <ul class="navbar-nav flex-row ml-md-auto d-md-flex">
           <% if can? :read, @professionals %>
-            <li>
-              <a class="btn btn-mini btn-outline-light " href="/professionals">Profesionales</a>
-            </li>
+            <li><a class="btn btn-mini btn-outline-light " href="/professionals">Profesionales</a></li>
           <% end %>
+          <% if can? :read, @users %>
+            <li><a class="btn btn-mini btn-outline-light " href="/admin/users">Usuarios</a></li>
+          <% end %>
+          <li><%= link_to "Grillas", grids_grid_generator_path, method: :get ,:class => "btn btn-mini btn-outline-light " %></li>
           <li><%= link_to "Cerrar Sesión", destroy_user_session_path, method: :delete, data: {confirm: 'Deseas cerrar sesión?'},:class => "btn btn-mini btn-outline-light " %></li>
         </ul>
       <% end %>

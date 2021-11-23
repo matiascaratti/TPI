@@ -1,0 +1,29 @@
+<h2>Listado de Usuarios</h2>
+<div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Rol</th>
+        <tr>
+    </thead>
+    <tbody>
+    <% @users.each do |p| %>
+        <tr>
+            <td><%= p.email %></td>
+            <td><%= p.role %></td>
+            <td>
+                <% if can? :edit, p %>
+                    <%= link_to "Editar", edit_user_path(p), :class => 'btn btn-mini btn-outline-dark'%>
+                <% end %>
+                <% if can? :destroy, p %>
+                    <%= link_to "Eliminar", p, method: :delete, data: { confirm: "Desea eliminar este usuario?"}, :class => 'btn btn-mini btn-outline-danger' %>
+                <% end %>
+            </td>
+        </tr>
+    <% end %>
+</table>
+<% if can? :create, @users %>
+    <%= link_to "Nuevo Usuario", new_user_path, :class => 'btn btn-mini btn-outline-success'%>
+<% end %>
+</div>
