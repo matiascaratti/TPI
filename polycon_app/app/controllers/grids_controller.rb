@@ -1,16 +1,23 @@
 require 'erb'
 require 'date'
 class GridsController < ApplicationController
-    #before_action :authenticate_user!
-    #load_and_authorize_resource
+    def index 
+         
+        @grid = Grid.new(params[:grid]) do |scope|
+            scope.page(params[:page])
+        end
+        
+    end
+
     def grid_generator
-        @professionals = Professional.all 
+        @professionals = Professional.all
     end
 
     def generate_grid
         hours = []
         (8..19).each do |hour|
             hours << "#{hour}:00"
+            hours << "#{hour}:30"
         end
         date = Date.strptime(params[:date_filter], "%Y-%m-%d")
         days = [date]
@@ -26,30 +33,35 @@ class GridsController < ApplicationController
         else
             professionals = Professional.all
         end
-        dic = {}
+        dic_prof_general = {}
         if(!professionals.empty?)
             professionals.each do |pr|
-                dic_day = {}
+                dic_prof_aux = {}
+                dic_day_general = {}
                 days.each do |da|
-                    dic_hour = {}
                     dic_day_aux = {}
-                    appointments = Appointment.where(professional: pr.id).where(date: da)
-                    if(!appointments.empty?)
-                        appointments.each do |ap|
-                            dic_hour_aux = {}
-                            a_hour = (ap.date.hour).to_s + ":00"
-                            dic_hour_aux[a_hour] = ap.patient_name + " " + ap.patient_surname
-                            #date_aux = Date.strptime(a.date.to_s, "%Y-%m-%d").to_s
-                            dic_hour.merge!(dic_hour_aux)
-                            #dic_day.merge!(dic_hour)
+                    dic_hour_general = {}
+                    hours.each do |ho|
+                        dic_hour_aux = {}
+                        date_aux = da.to_s + " " + ho
+                        appointment = Appointment.where(professional: pr).where(date: date_aux)
+                        if(!appointment.empty?)
+                            dic_hour_aux[ho] = appointment.first.patient_name + " " + appointment.first.patient_surname
+                            dic_hour_general.merge!(dic_hour_aux)
                         end
-                        dic_day_aux.merge!(dic_hour)
                     end
-                    dic_day.store(da, dic_day_aux)
+                    dic_day_aux.store(da.to_s, dic_hour_general)
+                    dic_day_general.merge!(dic_day_aux)
                 end
-                dic.store(pr.name, dic_day)
+                dic_prof_aux.store(pr.name, dic_day_general)
+                dic_prof_general.merge!(dic_prof_aux)
             end
         end
+
+
+
+
+
         template = ERB.new <<-END, nil, '-'
             <!DOCTYPE html>
             <html lang="es">
@@ -72,10 +84,10 @@ class GridsController < ApplicationController
                                 <td><%= hour %></td>
                                 <% days.each do |di| %>
                                     <td><% professionals.each do |p| %>
-                                        <% if (!(dic[p.name]).nil?) %>
-                                            <% if (!((dic[p.name])[di]).nil?) %>
-                                                <% if (!(((dic[p.name])[di])[hour]).nil?) %>
-                                                    <%= "#"+((dic[p.name])[di])[hour]+" - "+p.name%>
+                                        <% if (!(dic_prof_general[p.name]).nil?) %>
+                                            <% if (!((dic_prof_general[p.name])[di.to_s]).nil?) %>
+                                                <% if (!(((dic_prof_general[p.name])[di.to_s])[hour]).nil?) %>
+                                                    <%= "#"+((dic_prof_general[p.name])[di.to_s])[hour]+" - Dr./Dra. "+p.name%>
                                                 <% end %>
                                             <% end %>
                                         <% end %>
@@ -90,5 +102,6 @@ class GridsController < ApplicationController
 
             send_data (template.result binding), :filename => "grilla.html"
     end
+
 
 end

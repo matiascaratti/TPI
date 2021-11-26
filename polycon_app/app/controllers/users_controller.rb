@@ -1,8 +1,7 @@
 class UsersController < ApplicationController
-    before_action :authenticate_user!
     load_and_authorize_resource
     def index
-        @users = User.all.order(:name)paginate(:page => params[:page], :per_page => 10)
+        @users = User.all.order(:name).paginate(:page => params[:page], :per_page => 10)
     end
     
     def new
@@ -14,7 +13,7 @@ class UsersController < ApplicationController
         if @user.save
             redirect_to users_path, :alert => "Creación exitosa"
         else
-            render :new
+            redirect_to create_user_path, :alert => "No se pudo crear el usuario"
         end
     end
 
@@ -29,10 +28,10 @@ class UsersController < ApplicationController
             if @user.update(user_params)
                 redirect_to users_path, :alert => "Modificación exitosa"
             else
-                render :edit
+                redirect_to edit_professional_path(@user), :alert => "No se pudo modificar los datos de usuario"
             end
         else
-            render :edit, :alert => "El email ingresado ya existe"
+            redirect_to edit_professional_path(@user), :alert => "El email ingresado ya existe"
         end
     end
 

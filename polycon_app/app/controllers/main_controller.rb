@@ -1,6 +1,6 @@
 class MainController < ApplicationController
-  before_action :authenticate_user!
   def home
     @professionals = Professional.all
+    @users = User.all
   end
 end

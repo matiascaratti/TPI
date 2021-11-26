@@ -1,6 +1,6 @@
 <div>
 <h2>Listado de Turnos de <%=@professional.name%></h2>
-</div>
+</div><br>
 <%=form_with url: filter_index_professional_appointments_path(@professional), method: :get do |form|%>
     <div class="form-group row">
         <%= form.label :date_filter, "Filtrar por fecha:", :class => "col-sm-2 col-form-label"%>
@@ -10,9 +10,10 @@
     </div>
     <div>
         <%= form.text_field :professional_id, value: @professional.id, type:'hidden'%>
-    </div>
+    </div><br>
         <%= form.submit "Filtrar", :class => 'btn btn-mini btn-outline-dark'%>
 <% end %>
+<br>
 <table class="table">
     <thead>
         <tr>
@@ -34,10 +35,10 @@
     </tbody>
 </table>
 <%= link_to "Volver", professionals_path, :class => 'btn btn-mini btn-outline-dark'%>
-<% if can? :create, @appointments %>
+<% if can? :create, Appointment %>
     <%= link_to "Nuevo Turno", new_professional_appointment_path(@professional), :class => 'btn btn-mini btn-outline-success'%>
 <% end %>
-<% if can? :cancel_all, @appointments %>
+<% if can? :cancel_all, Appointment %>
     <%= link_to "Cancelar todos", cancel_all_professional_appointments_path(@professional), method: :delete, data: {confirm: 'Deseas cancelar todos los turnos de este profesional?'}, :class => 'btn btn-mini btn-outline-danger'%>
 <% end %>
 <div><br>

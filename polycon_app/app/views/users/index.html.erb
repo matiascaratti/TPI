@@ -1,5 +1,5 @@
 <h2>Listado de Usuarios</h2>
-<div>
+<div><br>
 <table class="table">
     <thead>
         <tr>
@@ -13,11 +13,11 @@
             <td><%= p.email %></td>
             <td><%= p.role %></td>
             <td>
-                <% if can? :edit, p %>
+                <% if can? :edit, User %>
                     <%= link_to "Editar", edit_user_path(p), :class => 'btn btn-mini btn-outline-dark'%>
                 <% end %>
                 <% if p.role != "admin" %>
-                    <% if can? :destroy, p %>
+                    <% if can? :destroy, User %>
                         <%= link_to "Eliminar", p, method: :delete, data: { confirm: "Desea eliminar este usuario?"}, :class => 'btn btn-mini btn-outline-danger' %>
                     <% end %>
                 <% end %>
@@ -25,7 +25,7 @@
         </tr>
     <% end %>
 </table>
-<% if can? :create, @users %>
+<% if can? :create, User %>
     <%= link_to "Nuevo Usuario", new_user_path, :class => 'btn btn-mini btn-outline-success'%>
 <% end %>
 </div>

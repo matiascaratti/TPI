@@ -1,6 +1,6 @@
 <div>
 <h2>Detalles</h2>
-</div>
+</div><br>
 <table class="table">
     <thead>
         <tr>
@@ -22,13 +22,13 @@
         <td><%= @appointment.patient_phone %></td>
         <td><%= @appointment.notes %></td>
         <td>
-            <% if can? :edit, @appointment %>
+            <% if can? :edit, Appointment %>
                 <%= link_to "Editar", edit_professional_appointment_path(@professional, @appointment), :class => 'btn btn-mini btn-outline-dark'%>
             <% end %>
-            <% if can? :update, @appointment %>
+            <% if can? :update, Appointment %>
                 <%= link_to "Reagendar", reschedule_professional_appointment_path(@professional, @appointment), :class => 'btn btn-mini btn-outline-dark'%>
             <% end %>
-            <% if can? :destroy, @appointment %>
+            <% if can? :destroy, Appointment %>
                 <%= link_to "Cancelar", [@professional, @appointment], method: :delete, data: { confirm: "Desea cancelar este turno?"}, :class => 'btn btn-mini btn-outline-danger' %>
             <% end %>
         </td>

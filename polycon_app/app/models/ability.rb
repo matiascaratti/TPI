@@ -7,7 +7,6 @@ class Ability
     elsif user.role == "assistant"
       can :read, Professional
       can :manage, Appointment
-      can :cancel_all, :all 
     elsif user.role == "consultant"
       can :read, Professional
       can :read, Appointment

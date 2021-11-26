@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   end
   root 'main#home'
   get '/grids/grid_generator', to: 'grids#grid_generator'
-  get '/grids', to: 'grids#generate_grid'
+  get '/grids/download', to: 'grids#generate_grid'
   resources :professionals do
     resources :appointments do
       collection do

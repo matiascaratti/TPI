@@ -1,4 +1,4 @@
-<div><h2>Listado de Turnos de <%=@professional.name%><h2></div>
+<div><h2>Listado de Turnos de <%=@professional.name%><h2></div><br>
 <table class="table">
     <thead>
         <tr>
@@ -20,7 +20,7 @@
     </tbody>
 </table>
 <%= link_to "Volver", professional_appointments_path(@professional), :class => 'btn btn-mini btn-outline-dark'%>
-<% if can? :create, @appointments %>
+<% if can? :create, Appointment %>
     <%= link_to "Nuevo Turno", new_professional_appointment_path(@professional), :class => 'btn btn-mini btn-outline-success'%>
 <% end %>
 <div><br>

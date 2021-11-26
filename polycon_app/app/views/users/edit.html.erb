@@ -1,3 +1,4 @@
+<div><h2>Editar un Usuario</h2></div><br>
 <%= form_for @user do |p| %>
     <div class="form-group row">
         <%= p.label :email, "Email del usuario:", :class => "col-sm-2 col-form-label"%>
@@ -6,9 +7,9 @@
         </div>
     </div>
     <%= p.label :role, "Rol: ", :class => "col-sm-2 col-form-label"%>
-    <%= p.select :role, options_for_select(["admin","assistant","consultant"], :selected=> params[:role]),
+    <%= p.select :role, options_for_select(["admin","assistant","consultant"], @user.role),
     {}, { :class => 'span3 controls controls-row' } %>
-    <div>
+    <div><br>
         <%= link_to "Volver", users_path, :class =>'btn btn-mini btn-outline-dark'%>
         <%= p.submit "Guardar", :class =>'btn btn-mini btn-outline-success' %>
     </div>

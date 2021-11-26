@@ -1,11 +1,14 @@
+<div><h2>Reagendar un Turno</h2></div><br>
 <%= form_with(model: [@professional, @appointment]) do |a| %>
-    <div>
-        <%= a.label :date %>
-        <%= a.datetime_field :date %>
+    <div class="form-group row">
+        <%= a.label :date, "Fecha: " , :class => "col-sm-2 col-form-label"%>
+        <div class="col-sm-10">
+            <%= a.datetime_field :date, required:'true', :class=>"form-control"  %>
+        </div>
     </div>
     <div>
         <%= a.text_field :professional_id, value: @professional.id, type:'hidden'%>
-    </div>
+    </div><br>
     <div>
         <%= link_to 'Volver', professional_appointments_path(@professional), :class => 'btn btn-mini btn-outline-dark' %>
         <%= a.submit "Guardar", :class => 'btn btn-mini btn-outline-success'%>

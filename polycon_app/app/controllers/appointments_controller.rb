@@ -1,6 +1,5 @@
 require 'date'
 class AppointmentsController < ApplicationController
-    before_action :authenticate_user!
     load_and_authorize_resource
     def index
         @appointments = Appointment.where(professional: params[:professional_id]).order(:date).paginate(:page => params[:page], :per_page => 10)
@@ -16,9 +15,9 @@ class AppointmentsController < ApplicationController
         @appointment = Appointment.new(appointment_params)
         @professional = Professional.find(@appointment.professional_id)
         if @appointment.save
-            redirect_to professional_appointments_path(@professional), notice: params[:date]
+            redirect_to professional_appointments_path(@professional), :alert => "Turno agendado con éxito"
         else
-            render :new, :alert => "No se pudo agendar el turno debido a que ya existe un turno en la fecha y hora ingresada para este profesional"
+            redirect_to new_professional_appointment_path(@professional), :alert => "No se pudo agendar el turno debido a que ya existe un turno en la fecha y hora ingresada para este profesional"
         end
     end
 
@@ -38,7 +37,7 @@ class AppointmentsController < ApplicationController
         if @appointment.update(appointment_params)
             redirect_to  professional_appointments_path(@professional), :alert => "Modificación exitosa"
         else
-            redirect_to [@professional, @appointment], :alert => "No se pudo agendar el turno debido a que ya existe un turno en la fecha y hora ingresada para este profesional"
+            redirect_to [@professional, @appointment], :alert => "No se pudo modificar los datos del turno"
         end
     end
 

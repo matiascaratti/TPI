@@ -1,3 +1,4 @@
+<div><h2>Editar un Profesional</h2></div><br>
 <%= form_for @professional do |p| %>
     <div class="form-group row">
         <%= p.label :name, "Nombre del profesional:", :class => "col-sm-2 col-form-label"%>
@@ -23,7 +24,7 @@
             <%= p.text_field :specialty, required:'true', :class=>"form-control"%>
         </div>
     </div>
-    <div>
+    <div><br>
         <%= link_to "Volver", professionals_path, :class =>'btn btn-mini btn-outline-dark'%>
         <%= p.submit "Guardar", :class =>'btn btn-mini btn-outline-success' %>
     </div>

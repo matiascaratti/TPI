@@ -1,5 +1,4 @@
 class ProfessionalsController < ApplicationController 
-    before_action :authenticate_user!
     load_and_authorize_resource
     def index
         @professionals = Professional.all.order(:name).paginate(:page => params[:page], :per_page => 10)
@@ -12,9 +11,9 @@ class ProfessionalsController < ApplicationController
     def create
         @professional = Professional.new(professional_params)
         if @professional.save
-            redirect_to professionals_path
+            redirect_to professionals_path, :alert => "Profesional creado con éxito"
         else
-            render :new
+            redirect_to new_professional_path, :alert => "No se pudo crear al profesional"
         end
     end
 
@@ -27,7 +26,7 @@ class ProfessionalsController < ApplicationController
         if @professional.update(professional_params)
             redirect_to professionals_path, :alert => "Modificación exitosa"
         else
-            render :edit
+            redirect_to edit_professional_path(@professional), :alert => "No se pudo modificar los datos del profesional"
         end
     end
 
