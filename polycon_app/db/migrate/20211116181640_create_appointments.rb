@@ -1,7 +1,7 @@
 class CreateAppointments < ActiveRecord::Migration[6.1]
   def change
     create_table :appointments do |t|
-      t.date :datetime
+      t.date :date
       t.string :patient_name
       t.string :patient_surname
       t.string :patient_phone
