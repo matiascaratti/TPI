@@ -9,26 +9,26 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_link_tag "style" %>
-    <nav class="navbar navbar-light" style="background-color: #E3150B; "> 
-      <a class="navbar-logo" href="/" >
-      <%= image_tag 'logo.png', width:90, height:80 %>
-      </a>
-      <% if !user_session.nil? %>
-        <ul class="navbar-nav flex-row ml-md-auto d-md-flex">
-          <% if can? :read, Professional %>
-            <li><a class="btn btn-mini btn-outline-light " href="/professionals">Profesionales</a></li>
-          <% end %>
-          <% if can? :read, User%>
-            <li><a class="btn btn-mini btn-outline-light " href="/admin/users">Usuarios</a></li>
-          <% end %>
-          <li><%= link_to "Grillas", "/grids/grid_generator", method: :get ,:class => "btn btn-mini btn-outline-light " %></li>
-          <li><%= link_to "Cerrar Sesión", destroy_user_session_path, method: :delete, data: {confirm: 'Deseas cerrar sesión?'},:class => "btn btn-mini btn-outline-light " %></li>
-        </ul>
-      <% end %>
-    </nav>
   </head>
 
   <body>
+    <nav class="navbar navbar-light" style="background-color: #E3150B; "> 
+      <a class="navbar-logo" href="/" >
+        <%= image_tag 'logo.png', width:90, height:80 %>
+      </a>
+      <% if !user_session.nil? %>
+          <ul class="navbar-nav flex-row ml-md-auto d-md-flex">
+            <% if can? :read, Professional %>
+              <li class="nav-item"><a class="btn btn-mini btn-outline-light" href="/professionals">Profesionales</a></li>
+            <% end %>
+            <% if can? :read, User%>
+              <li class="nav-item"><a class="btn btn-mini btn-outline-light " href="/admin/users">Usuarios</a></li>
+            <% end %>
+            <li class="nav-item"><%= link_to "Grillas", "/grids/grid_generator", method: :get ,:class => "btn btn-mini btn-outline-light " %></li>
+            <li class="nav-item"><%= link_to "Cerrar Sesión", destroy_user_session_path, method: :delete, data: {confirm: 'Deseas cerrar sesión?'},:class => "btn btn-mini btn-outline-light " %></li>
+          </ul>
+      <% end %>
+    </nav>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <%= yield %>

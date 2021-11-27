@@ -1,4 +1,5 @@
 <div><h2>Agendar un turno</h2><div><br>
+<p class="text-secondary">Los turnos deben agendarse en un rango de horario de 8:00 a 19:30 (inclusive) y los minutos deben ser 00 o 30</p><br>
 <%= form_with(model: [@professional, @appointment]) do |a| %>
     <div class="form-group row">
         <%= a.label :date, "Fecha y hora:", :class => "col-sm-2 col-form-label"%>

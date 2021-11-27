@@ -14,10 +14,11 @@ class AppointmentsController < ApplicationController
     def create
         @appointment = Appointment.new(appointment_params)
         @professional = Professional.find(@appointment.professional_id)
-        if @appointment.save
+        error_msg = validation(appointment_params)
+        if error_msg.empty? and @appointment.save
             redirect_to professional_appointments_path(@professional), :alert => "Turno agendado con éxito"
         else
-            redirect_to new_professional_appointment_path(@professional), :alert => "No se pudo agendar el turno debido a que ya existe un turno en la fecha y hora ingresada para este profesional"
+            redirect_to new_professional_appointment_path(@professional), :alert => "No se pudo agendar el turno. #{error_msg}"
         end
     end
 
@@ -34,10 +35,11 @@ class AppointmentsController < ApplicationController
     def update
         @appointment = Appointment.find(params[:id])
         @professional = Professional.find(@appointment.professional_id)
-        if @appointment.update(appointment_params)
+        error_msg = validation(appointment_params)
+        if error_msg.empty? and @appointment.update(appointment_params)
             redirect_to  professional_appointments_path(@professional), :alert => "Modificación exitosa"
         else
-            redirect_to [@professional, @appointment], :alert => "No se pudo modificar los datos del turno"
+            redirect_to [@professional, @appointment], :alert => "No se pudo modificar los datos del turno. #{error_msg}"
         end
     end
 
@@ -67,5 +69,14 @@ class AppointmentsController < ApplicationController
     private
         def appointment_params
             params.require(:appointment).permit(:date, :patient_name, :patient_surname, :patient_phone, :notes, :professional_id)
+        end
+
+        def validation(appointment_params)
+            error_msg = ""
+            appointment_aux = Appointment.where(professional: appointment_params[:professional_id]).where(date: appointment_params[:date])
+            if !appointment_aux.empty?
+                error_msg = error_msg + "Ya existe un turno en este horario para este profesional.\n"
+            end
+            return error_msg
         end
 end

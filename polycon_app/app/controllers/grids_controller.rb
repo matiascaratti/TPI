@@ -2,11 +2,9 @@ require 'erb'
 require 'date'
 class GridsController < ApplicationController
     def index 
-         
         @grid = Grid.new(params[:grid]) do |scope|
             scope.page(params[:page])
         end
-        
     end
 
     def grid_generator

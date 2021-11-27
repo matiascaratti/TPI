@@ -11,7 +11,13 @@
     <% @users.each do |p| %>
         <tr>
             <td><%= p.email %></td>
-            <td><%= p.role %></td>
+            <% if p.role == "admin" %>
+                <td><%= "Administrador" %></td>
+            <% elsif p.role == "assistant" %>
+                <td><%= "Asistente" %></td>
+            <% elsif p.role == "consultant" %>
+                <td><%= "Consultante" %></td>
+            <% end %>
             <td>
                 <% if can? :edit, User %>
                     <%= link_to "Editar", edit_user_path(p), :class => 'btn btn-mini btn-outline-dark'%>

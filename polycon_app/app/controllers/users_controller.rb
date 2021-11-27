@@ -10,10 +10,11 @@ class UsersController < ApplicationController
 
     def create
         @user = User.new(user_params)
-        if @user.save
+        error_msg = validation(user_params)
+        if error_msg.empty? and @user.save
             redirect_to users_path, :alert => "Creación exitosa"
         else
-            redirect_to create_user_path, :alert => "No se pudo crear el usuario"
+            redirect_to new_user_path, :alert => error_msg
         end
     end
 
@@ -23,15 +24,11 @@ class UsersController < ApplicationController
 
     def update
         @user = User.find(params[:id])
-        aux = User.where(email: params[:email])
-        if (aux.empty?)
-            if @user.update(user_params)
-                redirect_to users_path, :alert => "Modificación exitosa"
-            else
-                redirect_to edit_professional_path(@user), :alert => "No se pudo modificar los datos de usuario"
-            end
+        error_msg = validation(user_params)
+        if error_msg.empty? and @user.update(user_params)
+            redirect_to users_path, :alert => "Modificación exitosa"
         else
-            redirect_to edit_professional_path(@user), :alert => "El email ingresado ya existe"
+            redirect_to edit_user_path(@user), :alert => error_msg
         end
     end
 
@@ -48,5 +45,17 @@ class UsersController < ApplicationController
     private
         def user_params
             params.require(:user).permit(:email, :password, :password_confirmation, :role)
+        end
+        
+        def validation(user_params)
+            error_msg = ""
+            if user_params[:password] != user_params[:password_confirmation]
+                error_msg = error_msg + "Las contraseñas no coinciden.\n"
+            end
+            user_aux = User.where(email: user_params[:email])
+            if !user_aux.empty?
+                error_msg = error_msg + "Ya existe un usuario con este email.\n"
+            end
+            return error_msg
         end
 end

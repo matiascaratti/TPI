@@ -10,10 +10,11 @@ class ProfessionalsController < ApplicationController
 
     def create
         @professional = Professional.new(professional_params)
-        if @professional.save
+        error_msg = validation(professional_params)
+        if error_msg.empty? and @professional.save
             redirect_to professionals_path, :alert => "Profesional creado con éxito"
         else
-            redirect_to new_professional_path, :alert => "No se pudo crear al profesional"
+            redirect_to new_professional_path, :alert => error_msg
         end
     end
 
@@ -23,10 +24,11 @@ class ProfessionalsController < ApplicationController
 
     def update
         @professional = Professional.find(params[:id])
-        if @professional.update(professional_params)
+        error_msg = validation(professional_params)
+        if error_msg.empty? and @professional.update(professional_params)
             redirect_to professionals_path, :alert => "Modificación exitosa"
         else
-            redirect_to edit_professional_path(@professional), :alert => "No se pudo modificar los datos del profesional"
+            redirect_to edit_professional_path(@professional), :alert => error_msg
         end
     end
 
@@ -48,5 +50,14 @@ class ProfessionalsController < ApplicationController
     private
         def professional_params
             params.require(:professional).permit(:name, :phone, :email, :specialty)
+        end
+
+        def validation(professional_params)
+            error_msg = ""
+            professional_aux = Professional.where(name: professional_params[:name])
+            if !professional_aux.empty?
+                error_msg = error_msg + "Ya existe un profesional con este nombre.\n"
+            end
+            return error_msg
         end
 end
