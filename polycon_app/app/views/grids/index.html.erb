@@ -1,0 +1,9 @@
+<h2>Generar nueva grilla</h2>
+<div>
+  <%= datagrid_form_for @grid, url: grids_path %>
+
+
+  <%= datagrid_table(@grid) %>
+</div>
+
+<%= link_to "Generar grilla", "", method: :get ,:class => "btn btn-mini btn-outline-success " %></li>

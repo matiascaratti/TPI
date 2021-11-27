@@ -1,7 +1,7 @@
 class ProfessionalsController < ApplicationController 
-
+    load_and_authorize_resource
     def index
-        @professionals = Professional.all.order(:name)
+        @professionals = Professional.all.order(:name).paginate(:page => params[:page], :per_page => 10)
     end
     
     def new
@@ -10,10 +10,11 @@ class ProfessionalsController < ApplicationController
 
     def create
         @professional = Professional.new(professional_params)
-        if @professional.save
-            redirect_to professionals_path
+        error_msg = validation(professional_params)
+        if error_msg.empty? and @professional.save
+            redirect_to professionals_path, :alert => "Profesional creado con éxito"
         else
-            render :new
+            redirect_to new_professional_path, :alert => error_msg
         end
     end
 
@@ -23,10 +24,11 @@ class ProfessionalsController < ApplicationController
 
     def update
         @professional = Professional.find(params[:id])
-        if @professional.update(professional_params)
-            redirect_to professionals_path
+        error_msg = validation(professional_params)
+        if error_msg.empty? and @professional.update(professional_params)
+            redirect_to professionals_path, :alert => "Modificación exitosa"
         else
-            render :edit
+            redirect_to edit_professional_path(@professional), :alert => error_msg
         end
     end
 
@@ -35,14 +37,27 @@ class ProfessionalsController < ApplicationController
     end
 
     def destroy
-        #Falta eliminar todos los appointments de ese profesional
-        @professional = Professional.find(params[:id])
-        @professional.delete
-        redirect_to professionals_path
+        query = Appointment.where(professional: params[:id])
+        if (query.empty?)
+            @professional = Professional.find(params[:id])
+            @professional.delete
+            redirect_to professionals_path, :alert => "Se eliminó el profesional"
+        else
+            redirect_to professionals_path, :alert => "No se pudo eliminar el profesional ya que posee turnos agendados"
+        end
     end
 
     private
         def professional_params
-            params.require(:professional).permit(:name)
+            params.require(:professional).permit(:name, :phone, :email, :specialty)
+        end
+
+        def validation(professional_params)
+            error_msg = ""
+            professional_aux = Professional.where(name: professional_params[:name])
+            if !professional_aux.empty?
+                error_msg = error_msg + "Ya existe un profesional con este nombre.\n"
+            end
+            return error_msg
         end
 end

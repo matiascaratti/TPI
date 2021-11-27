@@ -1,33 +1,46 @@
-<h1>Listado de Turnos de <%=@professional.name%><h1>
+<div>
+<h2>Listado de Turnos de <%=@professional.name%></h2>
+</div><br>
 <%=form_with url: filter_index_professional_appointments_path(@professional), method: :get do |form|%>
-    <div>
-        <%= form.label :date_filter, "Filtrar por fecha"%>
-        <%= form.date_field :date_filter, required:'true' %>
+    <div class="form-group row">
+        <%= form.label :date_filter, "Filtrar por fecha:", :class => "col-sm-2 col-form-label"%>
+        <div class="col-sm-10">
+            <%= form.date_field :date_filter, required:'true', :class=>"form-control" %>
+        </div>
     </div>
     <div>
         <%= form.text_field :professional_id, value: @professional.id, type:'hidden'%>
-    </div>
-    <div>
-        <%= form.submit "Filtrar"%>
-    </div>
+    </div><br>
+        <%= form.submit "Filtrar", :class => 'btn btn-mini btn-outline-dark'%>
 <% end %>
-<table>
-    <tr>
-        <thead>
+<br>
+<table class="table">
+    <thead>
+        <tr>
             <th>Fecha</th>
             <th>Paciente</th>
-        </thead>
-    </tr>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
     <% @appointments.each do |a| %>
         <tr>
-            <td><%= I18n.l(a.date) %></td>
-            <td><%= a.patient_name %></td>
+            <td><%= l a.date, format: :short %></td>
+            <td><%= a.patient_name + " "+ a.patient_surname %></td>
             <td>
-                <%= link_to "Ver", [@professional, a]%>
+                <%= link_to "Ver", [@professional, a], :class => 'btn btn-mini btn-outline-dark'%>
             </td>
         </tr>
     <% end %>
+    </tbody>
 </table>
-<%= link_to "Volver", professionals_path%>
-<%= link_to "Nuevo Turno", new_professional_appointment_path(@professional)%>
-<%= link_to "Cancelar todos", cancel_all_professional_appointments_path(@professional), method: :delete, data: {confirm: 'Deseas cancelar todos los turnos de este profesional?'}%>
+<%= link_to "Volver", professionals_path, :class => 'btn btn-mini btn-outline-dark'%>
+<% if can? :create, Appointment %>
+    <%= link_to "Nuevo Turno", new_professional_appointment_path(@professional), :class => 'btn btn-mini btn-outline-success'%>
+<% end %>
+<% if can? :cancel_all, Appointment %>
+    <%= link_to "Cancelar todos", cancel_all_professional_appointments_path(@professional), method: :delete, data: {confirm: 'Deseas cancelar todos los turnos de este profesional?'}, :class => 'btn btn-mini btn-outline-danger'%>
+<% end %>
+<div><br>
+<%= will_paginate @appointments , renderer: BootstrapPagination::Rails %>
+</div>

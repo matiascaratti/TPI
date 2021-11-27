@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  devise_for :users
+  scope "/admin" do
+    resources :users
+  end
+  root 'main#home'
+  get '/grids/grid_generator', to: 'grids#grid_generator'
+  get '/grids/download', to: 'grids#generate_grid'
   resources :professionals do
     resources :appointments do
       collection do

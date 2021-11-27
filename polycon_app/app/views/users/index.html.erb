@@ -1,0 +1,40 @@
+<h2>Listado de Usuarios</h2>
+<div><br>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Rol</th>
+        <tr>
+    </thead>
+    <tbody>
+    <% @users.each do |p| %>
+        <tr>
+            <td><%= p.email %></td>
+            <% if p.role == "admin" %>
+                <td><%= "Administrador" %></td>
+            <% elsif p.role == "assistant" %>
+                <td><%= "Asistente" %></td>
+            <% elsif p.role == "consultant" %>
+                <td><%= "Consultante" %></td>
+            <% end %>
+            <td>
+                <% if can? :edit, User %>
+                    <%= link_to "Editar", edit_user_path(p), :class => 'btn btn-mini btn-outline-dark'%>
+                <% end %>
+                <% if p.role != "admin" %>
+                    <% if can? :destroy, User %>
+                        <%= link_to "Eliminar", p, method: :delete, data: { confirm: "Desea eliminar este usuario?"}, :class => 'btn btn-mini btn-outline-danger' %>
+                    <% end %>
+                <% end %>
+            </td>
+        </tr>
+    <% end %>
+</table>
+<% if can? :create, User %>
+    <%= link_to "Nuevo Usuario", new_user_path, :class => 'btn btn-mini btn-outline-success'%>
+<% end %>
+</div>
+<div><br>
+<%= will_paginate @users , renderer: BootstrapPagination::Rails %>
+</div>

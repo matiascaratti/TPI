@@ -1,0 +1,30 @@
+<div>
+<h2>Generar nueva grilla</h2>
+</div><br>
+<%=form_with url: "/grids/download", method: :get do |form|%>
+    <div class="form-group row">
+        <%= form.label :date_filter, "Ingrese una fecha:", :class => "col-sm-2 col-form-label"%>
+        <div class="col-sm-10">
+            <%= form.date_field :date_filter, required:'true' %>
+        </div>
+    </div>
+    <div>
+        <%= form.label :day_week, "Dia/semana: ", :class => "col-sm-2 col-form-label"%>
+        <select name="day_week" id="day_week">
+            <option value="1">Día</option>
+            <option value="2">Semana</option>
+        </select>
+    </div>
+    <div>
+        <%= form.label :professional, "Profesional (opcional) : ", :class => "col-sm-2 col-form-label", for:"professional"%>
+        <select name="professional" id="professional">
+            <option value="0">Ninguno</option>
+            <% @professionals.each do |p| %>
+                <option value=<%=p.id%>><%= p.name %></option>
+            <% end %>
+        </select>
+    </div>
+    <div><br>
+        <%= form.submit "Generar Grilla", :class => 'btn btn-mini btn-outline-success'%>
+    </div>
+<% end %>

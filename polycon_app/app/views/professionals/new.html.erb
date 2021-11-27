@@ -1,10 +1,31 @@
+<div><h2>Nuevo Profesional</h2></div><br>
 <%= form_for @professional do |p| %>
-    <div>
-        <%= p.label :name, "Nombre del profesional:"%>
-        <%= p.text_field :name, required:'true'%>
+    <div class="form-group row">
+        <%= p.label :name, "Nombre del profesional:", :class => "col-sm-2 col-form-label"%>
+        <div class="col-sm-10">
+            <%= p.text_field :name, required:'true', :class=>"form-control"%>
+        </div>
+    </div>
+    <div class="form-group row">
+        <%= p.label :phone, "Teléfono del profesional:", :class => "col-sm-2 col-form-label"%>
+        <div class="col-sm-10">
+            <%= p.text_field :phone, required:'true', :class=>"form-control"%>
+        </div>
+    </div>
+    <div class="form-group row">
+        <%= p.label :email, "Email del profesional:", :class => "col-sm-2 col-form-label"%>
+        <div class="col-sm-10">
+            <%= p.email_field :email, required:'true', :class=>"form-control"%>
+        </div>
+    </div>
+    <div class="form-group row">
+        <%= p.label :specialty, "Especialidad del profesional:", :class => "col-sm-2 col-form-label"%>
+        <div class="col-sm-10">
+            <%= p.text_field :specialty, required:'true', :class=>"form-control"%>
+        </div>
     </div>
     <div>
-        <%= p.submit "Crear"%>
+        <%= link_to "Volver", professionals_path, :class =>'btn btn-mini btn-outline-dark'%>
+        <%= p.submit "Crear", :class =>'btn btn-mini btn-outline-success'%>
     </div>
 <% end %>
-<%= link_to "Volver", professionals_path%>
