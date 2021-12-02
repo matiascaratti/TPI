@@ -32,4 +32,7 @@ en ese archivo también se encuentran definidos profesionales y turnos
 Para volver a la página principal, presionar el logo ubicado en la barra de navegación.
 
 Para hacer funcionar la aplicación: 
-Posicionarse en la carpeta polycon_app desde la terminal y ejecutar el comando: rails s
+Posicionarse en la carpeta polycon_app desde la terminal y ejecutar los comandos:
+rake db:migrate
+rails db:seed
+rails s
