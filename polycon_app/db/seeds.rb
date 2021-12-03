@@ -12,10 +12,17 @@ User.create(email: "assistant@correo.com", password: "12341234", password_confir
 User.create(email: "consultant@correo.com", password: "12341234", password_confirmation: "12341234", role: "consultant")
 
 ###### Creación de Profesionales
-Professional.create(name: "Ramiro Blanco", email: "ramiro@correo.com", phone: "1133445566", specialty: "Odontología")
-Professional.create(name: "Camila Fernandez", email: "camila@correo.com", phone: "1199887766", specialty: "Kinesiología")
-Professional.create(name: "Laura Gomez", email: "laura@correo.com", phone: "1166554477", specialty: "Oftalmología")
-Professional.create(name: "Guillermo Carmona", email: "guillermo@correo.com", phone: "1155443322", specialty: "Cardiología")
+Professional.create(name: "Alan Blanco", email: "alan@correo.com", phone: "22133445566", specialty: "Odontología")
+Professional.create(name: "Camila Fernandez", email: "camila@correo.com", phone: "22199887766", specialty: "Kinesiología")
+Professional.create(name: "Laura Gomez", email: "laura@correo.com", phone: "22166554477", specialty: "Oftalmología")
+Professional.create(name: "Guillermo Carmona", email: "guillermo@correo.com", phone: "22155443322", specialty: "Cardiología")
+Professional.create(name: "Emma Vasquez", email: "emma@correo.com", phone: "22131234323", specialty: "Dermatología")
+Professional.create(name: "Fernando Gomez", email: "fernando@correo.com", phone: "22156663322", specialty: "Cardiología")
+Professional.create(name: "Gianina Sosa", email: "gianina@correo.com", phone: "22155477722", specialty: "Oftalmología")
+Professional.create(name: "Juana Esposito", email: "juana@correo.com", phone: "22155332272", specialty: "Pediatría")
+Professional.create(name: "Luana Ramirez", email: "luana@correo.com", phone: "22155999999", specialty: "Oftalmología")
+Professional.create(name: "Manuel Villegas", email: "manuel@correo.com", phone: "22154433356", specialty: "Kinesiologia")
+Professional.create(name: "Vanesa Estrada", email: "vanesa@correo.com", phone: "22155443322", specialty: "Dermatología")
 
 ###### Creación de Turnos
 Appointment.create(date: "14-02-2022 13:00", patient_name: "Dario", patient_surname: "Piedras", patient_phone: "1123432343", notes: "", professional_id: 1)
